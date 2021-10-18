@@ -1,0 +1,27 @@
+plugins {
+    id 'java'
+}
+
+group 'com.epam.esm.rest_api_basics'
+version 'unspecified'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation project(':core')
+    implementation 'org.springframework:spring-core:5.3.9'
+    implementation 'org.springframework:spring-web:5.3.9'
+    implementation 'org.springframework:spring-beans:5.3.9'
+    implementation 'org.springframework:spring-webmvc:5.3.9'
+    implementation 'org.springframework:spring-jdbc:5.3.9'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+    testImplementation 'org.mockito:mockito-core:4.0.0'
+    testImplementation 'org.mockito:mockito-junit-jupiter:4.0.0'
+}
+
+test {
+    useJUnitPlatform()
+}
