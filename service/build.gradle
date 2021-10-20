@@ -11,6 +11,9 @@ repositories {
 
 dependencies {
     implementation project(':core')
+    compileOnly 'org.projectlombok:lombok:1.18.22'
+    annotationProcessor 'org.projectlombok:lombok:1.18.22'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.0.1'
     implementation 'org.springframework:spring-core:5.3.9'
     implementation 'org.springframework:spring-web:5.3.9'
     implementation 'org.springframework:spring-beans:5.3.9'

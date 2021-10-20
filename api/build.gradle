@@ -22,7 +22,3 @@ dependencies {
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.9.2'
 }
 
-application {
-    // Define the main class for the application.
-    mainClass = 'com.epam.esm.rest_api_basics.api.Main'
-}
