@@ -9,35 +9,34 @@ import lombok.ToString;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Data
 @NoArgsConstructor
 @Entity
-@Table(name = "gift_certificate")
+@Table(name = "order")
 @EntityListeners(AuditListener.class)
-public class GiftCertificate {
-
+public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long Id;
+    private Long id;
 
+    private BigDecimal cost;
+    private LocalDateTime purchaseDate;
 
-    private String name;
-    private String description;
-    private BigDecimal price;
-    private Integer duration;
-    private LocalDateTime createDate;
-    private LocalDateTime lastUpdateDate;
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    private User user;
 
     @ManyToMany
     @JoinTable(
-            name = "tags_in_certificate",
-            joinColumns = @JoinColumn(name = "certificate_id"),
-            inverseJoinColumns = @JoinColumn(name = "tag_id")
+            name = "certificates_in_order",
+            joinColumns = @JoinColumn(name = "order_id"),
+            inverseJoinColumns = @JoinColumn(name = "certificate_id")
     )
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    private List<Tag> tags = new ArrayList<>();
+    private List<GiftCertificate> certificates;
 }

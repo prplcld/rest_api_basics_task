@@ -4,7 +4,6 @@ import com.epam.esm.restapibasics.model.dao.GiftCertificateDao;
 import com.epam.esm.restapibasics.model.dao.OrderType;
 import com.epam.esm.restapibasics.model.dao.TagDao;
 import com.epam.esm.restapibasics.model.dao.exception.EntityNotFoundException;
-import com.epam.esm.restapibasics.model.dao.exception.NoTagFoundException;
 import com.epam.esm.restapibasics.model.entity.GiftCertificate;
 import com.epam.esm.restapibasics.model.entity.Tag;
 import com.epam.esm.restapibasics.service.GiftCertificateService;
@@ -16,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -49,13 +49,13 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     private void addTagsToCertificate(List<TagDto> tags, Long certificateId) {
         for (TagDto t : tags) {
             Long tagId;
-            try {
-                Tag tag = tagDao.getByName(t.getName());
-                tagId = tag.getId();
-            } catch (NoTagFoundException e) {
-                tagId = tagDao.create(t.toTag());
-            }
-
+                Optional<Tag> tag = tagDao.getByName(t.getName());
+                if (tag.isPresent()) {
+                    tagId = tag.get().getId();
+                }
+                else {
+                    tagId = tagDao.create(t.toTag());
+                }
             if (!giftCertificateDao.attachTag(certificateId, tagId)) {
                 throw new DaoResultException();
             }
@@ -105,7 +105,6 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
      * Delete an existing certificate.
      *
      * @param id certificate id
-     * @throws DaoResultException
      */
     @Transactional(rollbackFor = Exception.class, timeout = 30)
     @Override

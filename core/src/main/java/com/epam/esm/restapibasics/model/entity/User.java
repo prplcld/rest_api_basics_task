@@ -15,9 +15,10 @@ import javax.persistence.Table;
 @Data
 @NoArgsConstructor
 @Entity
-@Table(name = "tag")
+@Table(name = "user")
 @EntityListeners(AuditListener.class)
-public class Tag {
+public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

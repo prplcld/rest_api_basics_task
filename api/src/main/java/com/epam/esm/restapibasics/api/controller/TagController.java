@@ -63,7 +63,7 @@ public class TagController {
      */
     @GetMapping()
     public ResponseEntity<List<TagDto>> getAll() {
-        List<TagDto> tagDtos = tagService.getAll();
+        List<TagDto> tagDtos = tagService.getAll(null);
         return new ResponseEntity<>(tagDtos, HttpStatus.OK);
     }
 }

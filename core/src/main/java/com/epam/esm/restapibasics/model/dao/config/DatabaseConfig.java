@@ -60,10 +60,6 @@ public class DatabaseConfig {
         return jdbcTemplate;
     }
 
-    @Bean
-    public TagDao tagDao(JdbcTemplate jdbcTemplate) {
-        return new TagDaoImpl(jdbcTemplate);
-    }
 
     @Bean
     public GiftCertificateDao giftCertificateDao(JdbcTemplate jdbcTemplate) {
