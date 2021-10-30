@@ -3,6 +3,7 @@ package com.epam.esm.restapibasics.service.impl;
 import com.epam.esm.restapibasics.model.dao.GiftCertificateDao;
 import com.epam.esm.restapibasics.model.dao.OrderType;
 import com.epam.esm.restapibasics.model.dao.TagDao;
+import com.epam.esm.restapibasics.model.dao.exception.EntityNotFoundException;
 import com.epam.esm.restapibasics.model.dao.exception.NoTagFoundException;
 import com.epam.esm.restapibasics.model.entity.GiftCertificate;
 import com.epam.esm.restapibasics.model.entity.Tag;
@@ -111,7 +112,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     public void delete(Long id) {
         giftCertificateDao.deleteFromTags(id);
         if (!giftCertificateDao.delete(id)) {
-            throw new DaoResultException();
+            throw new EntityNotFoundException(id);
         }
     }
 
@@ -119,14 +120,13 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
      * Updates an existing certificate.
      *
      * @param giftCertificateDto certificate object
-     * @throws DaoResultException in case when certificate with this id does not exist
      */
     @Transactional
     @Override
     public void update(GiftCertificateDto giftCertificateDto) {
         GiftCertificate giftCertificate = giftCertificateDto.toCertificate();
         if (!giftCertificateDao.update(giftCertificate)) {
-            throw new DaoResultException();
+            throw new EntityNotFoundException(giftCertificate.getId());
         }
         List<TagDto> tags = giftCertificateDto.getTags();
         addTagsToCertificate(tags, giftCertificate.getId());

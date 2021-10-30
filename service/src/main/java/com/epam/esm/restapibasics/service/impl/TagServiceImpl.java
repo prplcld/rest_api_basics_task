@@ -1,6 +1,7 @@
 package com.epam.esm.restapibasics.service.impl;
 
 import com.epam.esm.restapibasics.model.dao.TagDao;
+import com.epam.esm.restapibasics.model.dao.exception.EntityNotFoundException;
 import com.epam.esm.restapibasics.model.entity.Tag;
 import com.epam.esm.restapibasics.service.TagService;
 import com.epam.esm.restapibasics.service.dto.TagDto;
@@ -58,13 +59,13 @@ public class TagServiceImpl implements TagService {
      * Deletes tag by id.
      *
      * @param id tag id value.
-     * @throws DaoResultException
+     * @throws EntityNotFoundException
      */
     @Transactional(rollbackFor = Exception.class, timeout = 30)
     public void delete(Long id) {
         tagDao.deleteFromCertificates(id);
         if (!tagDao.delete(id)) {
-            throw new DaoResultException();
+            throw new EntityNotFoundException(id);
         }
     }
 
