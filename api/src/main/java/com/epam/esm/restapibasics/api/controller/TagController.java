@@ -1,5 +1,6 @@
 package com.epam.esm.restapibasics.api.controller;
 
+import com.epam.esm.restapibasics.model.dao.Paginator;
 import com.epam.esm.restapibasics.service.TagService;
 import com.epam.esm.restapibasics.service.dto.TagDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/certificates/tag")
+@RequestMapping("/tags")
 public class TagController {
 
     private final TagService tagService;
@@ -63,7 +64,7 @@ public class TagController {
      */
     @GetMapping()
     public ResponseEntity<List<TagDto>> getAll() {
-        List<TagDto> tagDtos = tagService.getAll(null);
+        List<TagDto> tagDtos = tagService.getAll(new Paginator(1, 10));
         return new ResponseEntity<>(tagDtos, HttpStatus.OK);
     }
 }

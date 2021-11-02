@@ -25,13 +25,13 @@ public class UserServiceImpl implements UserService {
     public List<UserDto> findAll(Paginator paginator) {
         return userDao.findAll(paginator)
                 .stream()
-                .map(DtoMappingUtil::mapFromUser)
+                .map(DtoMappingUtil::mapToUserDto)
                 .collect(Collectors.toList());
     }
 
     @Override
     public UserDto findById(Long id) {
         User user = userDao.findById(id).orElseThrow(() -> new EntityNotFoundException(id));
-        return DtoMappingUtil.mapFromUser(user);
+        return DtoMappingUtil.mapToUserDto(user);
     }
 }

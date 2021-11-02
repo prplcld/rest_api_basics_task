@@ -3,20 +3,17 @@ package com.epam.esm.restapibasics.model.dao;
 import com.epam.esm.restapibasics.model.entity.GiftCertificate;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 public interface GiftCertificateDao {
-    GiftCertificate getById(Long id);
+    Optional<GiftCertificate> getById(Long id);
 
-    List<GiftCertificate> find(String tagName, String certificateName, String certificateDescription,
-                               OrderType orderByName, OrderType orderByCreateDate);
+    List<GiftCertificate> find(Paginator paginator, Map<String, SearchParameter> parameters);
 
-    boolean delete(Long id);
+    void delete(GiftCertificate giftCertificate);
 
-    boolean update(GiftCertificate giftCertificate);
+    void update(GiftCertificate giftCertificate);
 
     Long create(GiftCertificate giftCertificate);
-
-    boolean attachTag(Long certificateId, Long tagId);
-
-    boolean deleteFromTags(Long id);
 }

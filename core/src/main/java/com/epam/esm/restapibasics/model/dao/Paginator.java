@@ -27,6 +27,9 @@ public class Paginator {
         if (amount < MIN_AMOUNT || amount > MAX_AMOUNT) {
            //FIXME
         }
+
+        this.page = page;
+        this.amount = amount;
     }
 
     public int getPage() {

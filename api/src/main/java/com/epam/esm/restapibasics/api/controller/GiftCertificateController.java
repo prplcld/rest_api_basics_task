@@ -1,5 +1,7 @@
 package com.epam.esm.restapibasics.api.controller;
 
+import com.epam.esm.restapibasics.model.dao.Paginator;
+import com.epam.esm.restapibasics.model.dao.SearchParameter;
 import com.epam.esm.restapibasics.service.GiftCertificateService;
 import com.epam.esm.restapibasics.service.dto.GiftCertificateDto;
 import com.epam.esm.restapibasics.service.dto.SearchParamsModelDto;
@@ -8,7 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/certificates")
@@ -30,8 +34,9 @@ public class GiftCertificateController {
      */
     @GetMapping()
     public ResponseEntity<List<GiftCertificateDto>> find(@ModelAttribute SearchParamsModelDto searchParamsModelDto) {
-
-        List<GiftCertificateDto> certificates = giftCertificateService.getAll(searchParamsModelDto);
+        //FIXME add params to hash map
+        Map<String, SearchParameter> params = new HashMap<>();
+        List<GiftCertificateDto> certificates = giftCertificateService.getAll(new Paginator(1, 10), params);
         return new ResponseEntity<>(certificates, HttpStatus.OK);
     }
 

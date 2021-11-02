@@ -1,7 +1,6 @@
 package com.epam.esm.restapibasics.model.dao;
 
 import com.epam.esm.restapibasics.model.entity.Tag;
-import com.epam.esm.restapibasics.model.dao.exception.NoTagFoundException;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,9 +15,4 @@ public interface TagDao {
     void delete(Long id);
 
     Optional<Tag> getByName(String name);
-
-    List<Tag> getByCertificateId(Long id);
-
-    boolean deleteFromCertificates(Long id);
-
 }

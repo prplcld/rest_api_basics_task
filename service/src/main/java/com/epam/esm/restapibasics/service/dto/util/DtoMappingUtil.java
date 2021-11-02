@@ -1,13 +1,17 @@
 package com.epam.esm.restapibasics.service.dto.util;
 
+import com.epam.esm.restapibasics.model.entity.GiftCertificate;
 import com.epam.esm.restapibasics.model.entity.Tag;
 import com.epam.esm.restapibasics.model.entity.User;
+import com.epam.esm.restapibasics.service.dto.GiftCertificateDto;
 import com.epam.esm.restapibasics.service.dto.TagDto;
 import com.epam.esm.restapibasics.service.dto.UserDto;
 
+import java.util.stream.Collectors;
+
 public class DtoMappingUtil {
 
-    public static UserDto mapFromUser(User user) {
+    public static UserDto mapToUserDto(User user) {
         UserDto userDto = new UserDto();
 
         userDto.setId(user.getId());
@@ -25,12 +29,46 @@ public class DtoMappingUtil {
         return tag;
     }
 
-    public static TagDto mapFromTag(Tag tag) {
+    public static TagDto mapToTagDto(Tag tag) {
         TagDto tagDto = new TagDto();
 
         tagDto.setId(tag.getId());
         tagDto.setName(tag.getName());
 
         return tagDto;
+    }
+
+    public static GiftCertificate mapToCertificate(GiftCertificateDto giftCertificateDto) {
+        GiftCertificate certificate = new GiftCertificate();
+
+        certificate.setId(giftCertificateDto.getId());
+        certificate.setName(giftCertificateDto.getName());
+        certificate.setDescription(giftCertificateDto.getDescription());
+        certificate.setPrice(giftCertificateDto.getPrice());
+        certificate.setDuration(giftCertificateDto.getDuration());
+
+        certificate.setTags(giftCertificateDto.getTags().stream()
+        .map(DtoMappingUtil::mapToTag)
+        .collect(Collectors.toList()));
+
+        return certificate;
+    }
+
+    public static GiftCertificateDto mapToCertificateDto(GiftCertificate certificate) {
+        GiftCertificateDto certificateDto = new GiftCertificateDto();
+
+        certificateDto.setId(certificate.getId());
+        certificateDto.setName(certificate.getName());
+        certificateDto.setDescription(certificate.getDescription());
+        certificateDto.setPrice(certificate.getPrice());
+        certificateDto.setDuration(certificate.getDuration());
+        certificateDto.setCreateDate(certificate.getCreateDate());
+        certificateDto.setLastUpdateDate(certificate.getLastUpdateDate());
+
+        certificateDto.setTags(certificate.getTags().stream()
+                .map(DtoMappingUtil::mapToTagDto)
+                .collect(Collectors.toList()));
+
+        return certificateDto;
     }
 }

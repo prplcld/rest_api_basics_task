@@ -13,7 +13,7 @@ import java.util.Optional;
 
 @Repository
 public class TagDaoImpl implements TagDao {
-    //FIXME
+
     private static final String SELECT_ALL_SQL = "SELECT t FROM Tag t";
     private static final String SELECT_BY_NAME = "SELECT t FROM Tag t WHERE t.name = :name";
     private static final String NAME_PARAMETER = "name";
@@ -86,27 +86,5 @@ public class TagDaoImpl implements TagDao {
     @Override
     public void delete(Long id) {
         entityManager.remove(id);
-    }
-
-    /**
-     * Retrieve all tags attached to a certain certificate.
-     *
-     * @param id certificate id
-     * @return list of {@link Tag}
-     */
-    @Override
-    public List<Tag> getByCertificateId(Long id) {
-        return null;
-    }
-
-    /**
-     * Delete an existing tag from certificate.
-     *
-     * @param id tag id
-     * @return {@code true} if {@link Tag} existed and was deleted, otherwise {@code false}
-     */
-    @Override
-    public boolean deleteFromCertificates(Long id) {
-        return false;
     }
 }

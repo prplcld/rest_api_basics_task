@@ -62,11 +62,6 @@ public class DatabaseConfig {
 
 
     @Bean
-    public GiftCertificateDao giftCertificateDao(JdbcTemplate jdbcTemplate) {
-        return new GiftCertificateDaoImpl(jdbcTemplate);
-    }
-
-    @Bean
     public PlatformTransactionManager transactionManager(DataSource dataSource) {
         DataSourceTransactionManager dataSourceTransactionManager = new DataSourceTransactionManager();
         dataSourceTransactionManager.setDataSource(dataSource);
