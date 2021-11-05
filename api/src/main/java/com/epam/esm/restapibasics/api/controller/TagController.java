@@ -1,5 +1,7 @@
 package com.epam.esm.restapibasics.api.controller;
 
+import com.epam.esm.restapibasics.api.hateoas.HateoasEntity;
+import com.epam.esm.restapibasics.api.hateoas.LinkBuilder;
 import com.epam.esm.restapibasics.model.dao.Paginator;
 import com.epam.esm.restapibasics.service.TagService;
 import com.epam.esm.restapibasics.service.dto.TagDto;
@@ -28,9 +30,9 @@ public class TagController {
      * @return JSON {@link ResponseEntity}
      */
     @PostMapping
-    public ResponseEntity<Long> add(@RequestBody TagDto tagDto) {
-        Long tagId = tagService.create(tagDto);
-        return new ResponseEntity<>(tagId, HttpStatus.OK);
+    public ResponseEntity<TagDto> add(@RequestBody TagDto tagDto) {
+        TagDto tag = tagService.create(tagDto);
+        return new ResponseEntity<>(tag, HttpStatus.OK);
     }
 
     /**
@@ -52,9 +54,10 @@ public class TagController {
      * @return JSON {@link ResponseEntity} object that contains {@link TagDto} object
      */
     @GetMapping("/{id}")
-    public ResponseEntity<TagDto> get(@PathVariable Long id) {
+    public ResponseEntity<HateoasEntity<TagDto>> get(@PathVariable Long id) {
         TagDto tagDto = tagService.getById(id);
-        return new ResponseEntity<>(tagDto, HttpStatus.OK);
+        HateoasEntity<TagDto> hateoasEntity = HateoasEntity.build(tagDto);
+        return new ResponseEntity<>(hateoasEntity, HttpStatus.OK);
     }
 
     /**
@@ -63,8 +66,9 @@ public class TagController {
      * @return JSON {@link ResponseEntity} object that contains list of {@link TagDto}
      */
     @GetMapping()
-    public ResponseEntity<List<TagDto>> getAll() {
-        List<TagDto> tagDtos = tagService.getAll(new Paginator(1, 10));
+    public ResponseEntity<List<TagDto>> getAll(@RequestParam(required = false) Integer page,
+                                               @RequestParam(required = false) Integer amount) {
+        List<TagDto> tagDtos = tagService.getAll(new Paginator(page, amount));
         return new ResponseEntity<>(tagDtos, HttpStatus.OK);
     }
 }

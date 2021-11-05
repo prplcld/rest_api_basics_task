@@ -6,7 +6,7 @@ import com.epam.esm.restapibasics.service.dto.TagDto;
 import java.util.List;
 
 public interface TagService {
-    Long create(TagDto tagDto);
+    TagDto create(TagDto tagDto);
 
     List<TagDto> getAll(Paginator paginator);
 

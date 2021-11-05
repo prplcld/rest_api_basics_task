@@ -3,6 +3,7 @@ package com.epam.esm.restapibasics.model.dao.impl;
 import com.epam.esm.restapibasics.model.dao.OrderDao;
 import com.epam.esm.restapibasics.model.dao.Paginator;
 import com.epam.esm.restapibasics.model.entity.Order;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -10,6 +11,7 @@ import javax.persistence.TypedQuery;
 import java.util.List;
 import java.util.Optional;
 
+@Repository
 public class OrderDaoImpl implements OrderDao {
 
     private static final String ID = "id";
@@ -49,8 +51,8 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
-    public Long create(Order order) {
+    public Order create(Order order) {
         entityManager.persist(order);
-        return order.getId();
+        return order;
     }
 }

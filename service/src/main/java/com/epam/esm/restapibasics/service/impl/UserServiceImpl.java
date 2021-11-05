@@ -2,7 +2,7 @@ package com.epam.esm.restapibasics.service.impl;
 
 import com.epam.esm.restapibasics.model.dao.Paginator;
 import com.epam.esm.restapibasics.model.dao.UserDao;
-import com.epam.esm.restapibasics.model.dao.exception.EntityNotFoundException;
+import com.epam.esm.restapibasics.service.exception.EntityNotFoundException;
 import com.epam.esm.restapibasics.model.entity.User;
 import com.epam.esm.restapibasics.service.UserService;
 import com.epam.esm.restapibasics.service.dto.UserDto;

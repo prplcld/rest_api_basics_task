@@ -12,5 +12,5 @@ public interface OrderDao {
 
     List<Order> findByUser(Paginator paginator, long userId);
 
-    Long create(Order order);
+    Order create(Order order);
 }

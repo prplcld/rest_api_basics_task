@@ -73,9 +73,9 @@ public class TagDaoImpl implements TagDao {
      * @return unique id of the saved {@link Tag}
      */
     @Override
-    public Long create(Tag tag) {
+    public Tag create(Tag tag) {
         entityManager.persist(tag);
-        return tag.getId();
+        return tag;
     }
 
     /**

@@ -1,5 +1,7 @@
 package com.epam.esm.restapibasics.model.dao;
 
+import com.epam.esm.restapibasics.model.dao.exception.PaginatorException;
+
 public class Paginator {
 
     private static final int MIN_PAGE = 1;
@@ -21,11 +23,11 @@ public class Paginator {
         }
 
         if (page < MIN_PAGE) {
-            //FIXME
+            throw new PaginatorException();
         }
 
         if (amount < MIN_AMOUNT || amount > MAX_AMOUNT) {
-           //FIXME
+           throw new PaginatorException();
         }
 
         this.page = page;

@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface GiftCertificateService {
-    Long create(GiftCertificateDto giftCertificateDto);
+    GiftCertificateDto create(GiftCertificateDto giftCertificateDto);
 
     List<GiftCertificateDto> getAll(Paginator paginator, Map<String, SearchParameter> parameters);
 

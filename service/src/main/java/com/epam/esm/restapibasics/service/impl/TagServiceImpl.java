@@ -2,13 +2,12 @@ package com.epam.esm.restapibasics.service.impl;
 
 import com.epam.esm.restapibasics.model.dao.Paginator;
 import com.epam.esm.restapibasics.model.dao.TagDao;
-import com.epam.esm.restapibasics.model.dao.exception.EntityNotFoundException;
+import com.epam.esm.restapibasics.service.exception.EntityNotFoundException;
 import com.epam.esm.restapibasics.model.entity.Tag;
 import com.epam.esm.restapibasics.service.TagService;
 import com.epam.esm.restapibasics.service.dto.TagDto;
 import com.epam.esm.restapibasics.service.dto.util.DtoMappingUtil;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -29,9 +28,9 @@ public class TagServiceImpl implements TagService {
      * @param tagDto tag object to be added.
      * @return tag id value.
      */
-    public Long create(TagDto tagDto) {
+    public TagDto create(TagDto tagDto) {
         Tag tag = DtoMappingUtil.mapToTag(tagDto);
-        return tagDao.create(tag);
+        return DtoMappingUtil.mapToTagDto(tagDao.create(tag));
     }
 
     /**
@@ -62,7 +61,7 @@ public class TagServiceImpl implements TagService {
      *
      * @param id tag id value.
      */
-    @Transactional(rollbackFor = Exception.class, timeout = 30)
+
     public void delete(Long id) {
         tagDao.delete(id);
     }

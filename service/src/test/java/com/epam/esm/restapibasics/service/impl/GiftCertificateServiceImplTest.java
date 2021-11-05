@@ -1,32 +1,10 @@
 package com.epam.esm.restapibasics.service.impl;
 
-import com.epam.esm.restapibasics.model.dao.GiftCertificateDao;
-import com.epam.esm.restapibasics.model.dao.TagDao;
-import com.epam.esm.restapibasics.model.dao.exception.NoTagFoundException;
-import com.epam.esm.restapibasics.model.entity.GiftCertificate;
-import com.epam.esm.restapibasics.model.entity.Tag;
-import com.epam.esm.restapibasics.service.dto.GiftCertificateDto;
-import com.epam.esm.restapibasics.service.dto.SearchParamsModelDto;
-import com.epam.esm.restapibasics.service.dto.TagDto;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import static java.time.ZoneOffset.UTC;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class GiftCertificateServiceImplTest {

@@ -33,10 +33,12 @@ public class GiftCertificateController {
      * @return JSON {@link ResponseEntity} object that contains list of {@link GiftCertificateDto}
      */
     @GetMapping()
-    public ResponseEntity<List<GiftCertificateDto>> find(@ModelAttribute SearchParamsModelDto searchParamsModelDto) {
+    public ResponseEntity<List<GiftCertificateDto>> find(@ModelAttribute SearchParamsModelDto searchParamsModelDto,
+                                                         @RequestParam(required = false) Integer page,
+                                                         @RequestParam(required = false) Integer amount) {
         //FIXME add params to hash map
         Map<String, SearchParameter> params = new HashMap<>();
-        List<GiftCertificateDto> certificates = giftCertificateService.getAll(new Paginator(1, 10), params);
+        List<GiftCertificateDto> certificates = giftCertificateService.getAll(new Paginator(page, amount), params);
         return new ResponseEntity<>(certificates, HttpStatus.OK);
     }
 
@@ -59,7 +61,7 @@ public class GiftCertificateController {
      * @return JSON {@link ResponseEntity} object that contains created {@link GiftCertificateDto} object
      */
     @PostMapping
-    public ResponseEntity<Long> add(@RequestBody GiftCertificateDto giftCertificate) {
+    public ResponseEntity<GiftCertificateDto> add(@RequestBody GiftCertificateDto giftCertificate) {
         return new ResponseEntity<>(giftCertificateService.create(giftCertificate), HttpStatus.OK);
     }
 

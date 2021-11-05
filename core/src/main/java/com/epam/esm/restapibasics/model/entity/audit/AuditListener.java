@@ -12,11 +12,8 @@ import static com.epam.esm.restapibasics.model.entity.audit.Audit.Operation.*;
 import static java.time.ZoneOffset.UTC;
 
 public class AuditListener {
-    private static final String CREATED_MESSAGE = "ENTITY CREATED: %s";
-    private static final String UPDATED_MESSAGE = "ENTITY UPDATED: %s";
-    private static final String DELETED_MESSAGE = "ENTITY DELETED: %s";
 
-    private EntityManager entityManager;
+    private final EntityManager entityManager;
 
     public AuditListener(@Lazy EntityManager entityManager) {
         this.entityManager = entityManager;
@@ -24,22 +21,16 @@ public class AuditListener {
 
     @PostPersist
     public void postPersist(Object entity) {
-        String auditMessage = String.format(CREATED_MESSAGE, entity);
-
         createRecord(entity, CREATE);
     }
 
     @PostUpdate
     public void postUpdate(Object entity) {
-        String auditMessage = String.format(UPDATED_MESSAGE, entity);
-
         createRecord(entity, UPDATE);
     }
 
     @PostRemove
     public void postRemove(Object entity) {
-        String auditMessage = String.format(DELETED_MESSAGE, entity);
-
         createRecord(entity, DELETE);
     }
 

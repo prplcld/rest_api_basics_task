@@ -1,4 +1,4 @@
-package com.epam.esm.restapibasics.model.dao.exception;
+package com.epam.esm.restapibasics.service.exception;
 
 public class EntityNotFoundException extends RuntimeException {
     private final long entityId;

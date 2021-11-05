@@ -4,7 +4,7 @@ import com.epam.esm.restapibasics.model.dao.GiftCertificateDao;
 import com.epam.esm.restapibasics.model.dao.Paginator;
 import com.epam.esm.restapibasics.model.dao.SearchParameter;
 import com.epam.esm.restapibasics.model.dao.TagDao;
-import com.epam.esm.restapibasics.model.dao.exception.EntityNotFoundException;
+import com.epam.esm.restapibasics.service.exception.EntityNotFoundException;
 import com.epam.esm.restapibasics.model.entity.GiftCertificate;
 import com.epam.esm.restapibasics.model.entity.Tag;
 import com.epam.esm.restapibasics.service.GiftCertificateService;
@@ -42,7 +42,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
      */
     @Transactional(rollbackFor = Exception.class, timeout = 30)
     @Override
-    public Long create(GiftCertificateDto giftCertificateDto) {
+    public GiftCertificateDto create(GiftCertificateDto giftCertificateDto) {
         GiftCertificate giftCertificate = DtoMappingUtil.mapToCertificate(giftCertificateDto);
 
         LocalDateTime createDate = LocalDateTime.now(UTC);
@@ -54,7 +54,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
             giftCertificate.setTags(processTags(tags));
         }
 
-        return giftCertificateDao.create(giftCertificate);
+        return DtoMappingUtil.mapToCertificateDto(giftCertificateDao.create(giftCertificate));
     }
 
 
@@ -142,15 +142,13 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     private List<Tag> processTags(List<Tag> tags) {
         return tags.stream()
                 .map(t -> {
-
-
                     Optional<Tag> optionalTag = tagDao.getByName(t.getName());
                     Tag tag;
 
                     if (optionalTag.isEmpty()) {
                         tag = new Tag();
                         tag.setName(t.getName());
-                        tag.setId(tagDao.create(tag));
+                        tag.setId(tagDao.create(tag).getId());
                     } else {
                         tag = optionalTag.get();
                     }

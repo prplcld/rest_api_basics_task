@@ -1,12 +1,15 @@
 package com.epam.esm.restapibasics.service.dto.util;
 
 import com.epam.esm.restapibasics.model.entity.GiftCertificate;
+import com.epam.esm.restapibasics.model.entity.Order;
 import com.epam.esm.restapibasics.model.entity.Tag;
 import com.epam.esm.restapibasics.model.entity.User;
 import com.epam.esm.restapibasics.service.dto.GiftCertificateDto;
+import com.epam.esm.restapibasics.service.dto.OrderDto;
 import com.epam.esm.restapibasics.service.dto.TagDto;
 import com.epam.esm.restapibasics.service.dto.UserDto;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class DtoMappingUtil {
@@ -70,5 +73,23 @@ public class DtoMappingUtil {
                 .collect(Collectors.toList()));
 
         return certificateDto;
+    }
+
+    public static OrderDto mapToOrderDto(Order order) {
+        OrderDto orderDto = new OrderDto();
+
+        orderDto.setId(order.getId());
+        orderDto.setUserId(order.getUser().getId());
+        orderDto.setCost(order.getCost());
+        orderDto.setPurchaseDate(order.getPurchaseDate());
+
+        List<Long> certificates = order.getCertificates()
+                .stream()
+                .map(GiftCertificate::getId)
+                .collect(Collectors.toList());
+
+        orderDto.setCertificateIds(certificates);
+
+        return orderDto;
     }
 }

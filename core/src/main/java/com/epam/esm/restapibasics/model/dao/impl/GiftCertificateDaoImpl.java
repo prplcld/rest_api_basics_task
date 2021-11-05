@@ -51,9 +51,9 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
      * @return unique id of the saved {@link GiftCertificate}
      */
     @Override
-    public Long create(GiftCertificate giftCertificate) {
+    public GiftCertificate create(GiftCertificate giftCertificate) {
         entityManager.persist(giftCertificate);
-        return giftCertificate.getId();
+        return giftCertificate;
     }
 
     /**

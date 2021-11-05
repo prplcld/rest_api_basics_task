@@ -1,7 +1,7 @@
 package com.epam.esm.restapibasics.api.exception;
 
-import com.epam.esm.restapibasics.model.dao.exception.EntityAlreadyExistsException;
-import com.epam.esm.restapibasics.model.dao.exception.EntityNotFoundException;
+import com.epam.esm.restapibasics.service.exception.EntityAlreadyExistsException;
+import com.epam.esm.restapibasics.service.exception.EntityNotFoundException;
 import com.epam.esm.restapibasics.service.exception.DaoResultException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
