@@ -17,6 +17,8 @@ import java.util.Locale;
 @ControllerAdvice
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
+    //TODO
+
     private static final String NOT_FOUND_ERROR = "entity_not_found";
     private static final String ENTITY_ALREADY_CREATED_ERROR = "entity_already_created";
     private static final String DAO_ERROR = "dao_error";

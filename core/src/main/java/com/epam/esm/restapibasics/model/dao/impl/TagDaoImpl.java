@@ -6,6 +6,7 @@ import com.epam.esm.restapibasics.model.entity.Tag;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import java.util.List;
@@ -18,6 +19,24 @@ public class TagDaoImpl implements TagDao {
     private static final String SELECT_BY_NAME = "SELECT t FROM Tag t WHERE t.name = :name";
     private static final String NAME_PARAMETER = "name";
 
+    private static final String SELECT_MOST_WIDELY_USED_TAG = "SELECT t.id, t.name " +
+            "FROM app_user AS " +
+            "INNER JOIN app_order AS o ON o.id_user = u.id " +
+            "INNER JOIN certificate_order AS co ON co.id_order = o.id " +
+            "INNER JOIN gift_certificate AS c ON c.id = co.id_certificate " +
+            "INNER JOIN certificate_tag AS ct ON ct.id_certificate = c.id " +
+            "INNER JOIN tag AS t ON ct.id_tag = t.id " +
+            "WHERE u.id = ( " +
+            "SELECT u.id " +
+            "FROM app_user AS u " +
+            "INNER JOIN app_order AS o ON o.id_user = u.id " +
+            "GROUP BY u.id " +
+            "ORDER BY SUM(o.cost) DESC " +
+            "LIMIT 1 " +
+            ") " +
+            "GROUP BY t.id, t.name " +
+            "ORDER BY COUNT(t.name) DESC " +
+            "LIMIT 1;";
 
     @PersistenceContext
     private final EntityManager entityManager;
@@ -86,5 +105,17 @@ public class TagDaoImpl implements TagDao {
     @Override
     public void delete(Long id) {
         entityManager.remove(id);
+    }
+
+    @Override
+    public Optional<Tag> findMostWidelyUsedTag() {
+        try {
+            Tag tag = (Tag) entityManager.createNativeQuery(SELECT_MOST_WIDELY_USED_TAG, Tag.class)
+                    .getSingleResult();
+
+            return Optional.of(tag);
+        } catch (NoResultException e) {
+            return Optional.empty();
+        }
     }
 }

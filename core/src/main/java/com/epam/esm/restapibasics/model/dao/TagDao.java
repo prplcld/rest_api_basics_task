@@ -15,4 +15,6 @@ public interface TagDao {
     void delete(Long id);
 
     Optional<Tag> getByName(String name);
+
+    Optional<Tag> findMostWidelyUsedTag();
 }

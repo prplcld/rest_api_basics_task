@@ -2,6 +2,7 @@ package com.epam.esm.restapibasics.service.impl;
 
 import com.epam.esm.restapibasics.model.dao.Paginator;
 import com.epam.esm.restapibasics.model.dao.TagDao;
+import com.epam.esm.restapibasics.service.exception.EntityAlreadyExistsException;
 import com.epam.esm.restapibasics.service.exception.EntityNotFoundException;
 import com.epam.esm.restapibasics.model.entity.Tag;
 import com.epam.esm.restapibasics.service.TagService;
@@ -30,6 +31,10 @@ public class TagServiceImpl implements TagService {
      */
     public TagDto create(TagDto tagDto) {
         Tag tag = DtoMappingUtil.mapToTag(tagDto);
+        String name = tag.getName();
+        if (tagDao.getByName(name).isPresent()) {
+            throw new EntityAlreadyExistsException();
+        }
         return DtoMappingUtil.mapToTagDto(tagDao.create(tag));
     }
 
@@ -63,6 +68,8 @@ public class TagServiceImpl implements TagService {
      */
 
     public void delete(Long id) {
+        Tag tag = tagDao.getById(id)
+                .orElseThrow(() -> new EntityNotFoundException(id));
         tagDao.delete(id);
     }
 }
