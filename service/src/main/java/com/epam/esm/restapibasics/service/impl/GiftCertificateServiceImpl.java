@@ -80,7 +80,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     @Override
     public GiftCertificateDto getById(Long id) {
         GiftCertificate certificate = giftCertificateDao.getById(id).orElseThrow(() ->
-                new EntityNotFoundException(id));
+                new EntityNotFoundException(id, GiftCertificate.class));
 
         return DtoMappingUtil.mapToCertificateDto(certificate);
     }
@@ -95,7 +95,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     @Override
     public void delete(Long id) {
         GiftCertificate certificate = giftCertificateDao.getById(id)
-                .orElseThrow(() -> new EntityNotFoundException(id));
+                .orElseThrow(() -> new EntityNotFoundException(id, GiftCertificate.class));
         giftCertificateDao.delete(certificate);
     }
 
@@ -106,11 +106,11 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
      */
     @Transactional(rollbackFor = Exception.class, timeout = 30)
     @Override
-    public void update(GiftCertificateDto giftCertificateDto) {
+    public GiftCertificateDto update(GiftCertificateDto giftCertificateDto) {
         //FIXME add tag
         Long certificateId = giftCertificateDto.getId();
         GiftCertificate giftCertificate = giftCertificateDao.getById(certificateId)
-                .orElseThrow(() -> new EntityNotFoundException(certificateId));
+                .orElseThrow(() -> new EntityNotFoundException(certificateId, GiftCertificate.class));
 
         if (giftCertificateDto.getName() != null) {
             giftCertificate.setName(giftCertificateDto.getName());
@@ -136,7 +136,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
             giftCertificate.setTags(processTags(tags));
         }
 
-        giftCertificateDao.update(giftCertificate);
+        return DtoMappingUtil.mapToCertificateDto(giftCertificateDao.update(giftCertificate));
     }
 
     private List<Tag> processTags(List<Tag> tags) {

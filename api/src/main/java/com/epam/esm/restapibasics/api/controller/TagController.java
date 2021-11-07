@@ -1,7 +1,6 @@
 package com.epam.esm.restapibasics.api.controller;
 
 import com.epam.esm.restapibasics.api.hateoas.HateoasEntity;
-import com.epam.esm.restapibasics.api.hateoas.LinkBuilder;
 import com.epam.esm.restapibasics.model.dao.Paginator;
 import com.epam.esm.restapibasics.service.TagService;
 import com.epam.esm.restapibasics.service.dto.TagDto;
@@ -30,9 +29,10 @@ public class TagController {
      * @return JSON {@link ResponseEntity}
      */
     @PostMapping
-    public ResponseEntity<TagDto> add(@RequestBody TagDto tagDto) {
+    public ResponseEntity<HateoasEntity<TagDto>> add(@RequestBody TagDto tagDto) {
         TagDto tag = tagService.create(tagDto);
-        return new ResponseEntity<>(tag, HttpStatus.OK);
+        HateoasEntity<TagDto> hateoasEntity = HateoasEntity.build(tag);
+        return new ResponseEntity<>(hateoasEntity, HttpStatus.OK);
     }
 
     /**
@@ -70,5 +70,12 @@ public class TagController {
                                                @RequestParam(required = false) Integer amount) {
         List<TagDto> tagDtos = tagService.getAll(new Paginator(page, amount));
         return new ResponseEntity<>(tagDtos, HttpStatus.OK);
+    }
+
+    @GetMapping("/most_used_tag")
+    public ResponseEntity<HateoasEntity<TagDto>> getMostWidelyTag() {
+        TagDto tagDto = tagService.findMostWidelyUsedTag();
+        HateoasEntity<TagDto> hateoasEntity = HateoasEntity.build(tagDto);
+        return new ResponseEntity<>(hateoasEntity, HttpStatus.OK);
     }
 }

@@ -14,13 +14,18 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.5.5'
     implementation 'javax.xml.bind:jaxb-api:2.3.0'
 
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.5.5'
     implementation 'org.springframework:spring-core:5.3.9'
-    implementation 'org.springframework:spring-jdbc:5.3.9'
     implementation 'org.springframework:spring-web:5.3.9'
     implementation 'org.springframework:spring-beans:5.3.9'
     implementation 'org.springframework:spring-webmvc:5.3.9'
+    implementation 'org.springframework:spring-jdbc:5.3.9'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
     testImplementation 'org.springframework:spring-test:5.3.9'
     testImplementation 'com.h2database:h2:1.4.197'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test:2.5.5'
+    testImplementation 'org.springframework.boot:spring-boot-test-autoconfigure:2.5.5'
+
 }

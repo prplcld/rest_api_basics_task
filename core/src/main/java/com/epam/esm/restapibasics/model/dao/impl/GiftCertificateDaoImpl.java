@@ -76,7 +76,6 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
      */
     @Override
     public List<GiftCertificate> find(Paginator paginator, Map<String, SearchParameter> parameters) {
-        //TODO test method
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<GiftCertificate> criteriaQuery = criteriaBuilder.createQuery(GiftCertificate.class);
         Root<GiftCertificate> certificateRoot = criteriaQuery.from(GiftCertificate.class);
@@ -175,7 +174,8 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
      * @param giftCertificate {@link GiftCertificate} instance
      */
     @Override
-    public void update(GiftCertificate giftCertificate) {
+    public GiftCertificate update(GiftCertificate giftCertificate) {
         entityManager.merge(giftCertificate);
+        return giftCertificate;
     }
 }

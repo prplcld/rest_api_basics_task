@@ -1,5 +1,6 @@
 package com.epam.esm.restapibasics.api.controller;
 
+import com.epam.esm.restapibasics.api.hateoas.HateoasEntity;
 import com.epam.esm.restapibasics.model.dao.Paginator;
 import com.epam.esm.restapibasics.service.OrderService;
 import com.epam.esm.restapibasics.service.dto.OrderDto;
@@ -33,15 +34,16 @@ public class OrderController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<OrderDto> getOrder(@PathVariable("id") long id) {
+    public ResponseEntity<HateoasEntity<OrderDto>> getOrder(@PathVariable("id") long id) {
         OrderDto orderDto = orderService.findById(id);
-
-        return new ResponseEntity<>(orderDto, HttpStatus.OK);
+        HateoasEntity<OrderDto> hateoasEntity = HateoasEntity.build(orderDto);
+        return new ResponseEntity<>(hateoasEntity, HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<OrderDto> makeOrder(@RequestBody OrderDto orderDto) {
+    public ResponseEntity<HateoasEntity<OrderDto>> makeOrder(@RequestBody OrderDto orderDto) {
         OrderDto createdOrderDto = orderService.createOrder(orderDto);
-        return new ResponseEntity<>(createdOrderDto, HttpStatus.CREATED);
+        HateoasEntity<OrderDto> hateoasEntity = HateoasEntity.build(orderDto);
+        return new ResponseEntity<>(hateoasEntity, HttpStatus.CREATED);
     }
 }

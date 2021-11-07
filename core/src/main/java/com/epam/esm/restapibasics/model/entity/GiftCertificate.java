@@ -16,7 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "gift_certificate")
-//@EntityListeners(AuditListener.class)
+@EntityListeners(AuditListener.class)
 public class GiftCertificate {
 
     @Id

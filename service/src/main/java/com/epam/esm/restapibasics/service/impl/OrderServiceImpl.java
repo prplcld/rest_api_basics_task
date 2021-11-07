@@ -54,7 +54,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderDto findById(Long id) {
         Order order = orderDao.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(id));
+                .orElseThrow(() -> new EntityNotFoundException(id, Order.class));
         return DtoMappingUtil.mapToOrderDto(order);
     }
 
@@ -69,10 +69,10 @@ public class OrderServiceImpl implements OrderService {
         }
 
         User user = userDao.findById(userId)
-                .orElseThrow(() -> new EntityNotFoundException(userId));
+                .orElseThrow(() -> new EntityNotFoundException(userId, User.class));
         List<GiftCertificate> certificates = certificateIds.stream()
                 .map(id -> giftCertificateDao.getById(id)
-                        .orElseThrow(() -> new EntityNotFoundException(id)))
+                        .orElseThrow(() -> new EntityNotFoundException(id, GiftCertificate.class)))
                 .collect(Collectors.toList());
 
 

@@ -5,6 +5,7 @@ import com.epam.esm.restapibasics.api.controller.OrderController;
 import com.epam.esm.restapibasics.api.controller.TagController;
 import com.epam.esm.restapibasics.api.controller.UserController;
 import com.epam.esm.restapibasics.service.dto.BaseDto;
+import com.epam.esm.restapibasics.service.dto.OrderDto;
 import org.springframework.hateoas.Link;
 
 import java.util.ArrayList;
@@ -22,6 +23,8 @@ public class LinkBuilder {
     }
 
     private static final String resourceRel = "resource";
+    private static final String userRel = "user";
+    private static final String mostUsedTag = "most_used_tag";
 
     public static <T extends BaseDto> List<Link> buildLinks(T dto) {
         DtoType type = DtoType.get(dto.getClass().getSimpleName().toUpperCase());
@@ -30,6 +33,7 @@ public class LinkBuilder {
             case TAG_DTO -> {
                 links.add(buildSelfLink(TagController.class, dto));
                 links.add(buildControllerLink(TagController.class, resourceRel));
+                links.add(buildMostUsedTagLink());
             }
             case GIFT_CERTIFICATE_DTO -> {
                 links.add(buildSelfLink(GiftCertificateController.class, dto));
@@ -42,6 +46,8 @@ public class LinkBuilder {
             case ORDER_DTO -> {
                 links.add(buildSelfLink(OrderController.class, dto));
                 links.add(buildControllerLink(OrderController.class, resourceRel));
+                OrderDto orderDto = (OrderDto) dto;
+                links.add(buildControllerLinkWithId(UserController.class, userRel, orderDto.getUserId()));
             }
         }
         return links;
@@ -62,6 +68,12 @@ public class LinkBuilder {
         return linkTo(controller)
                 .slash(id)
                 .withRel(rel);
+    }
+
+    private static Link buildMostUsedTagLink() {
+        return linkTo(TagController.class)
+                .slash(mostUsedTag)
+                .withRel("mostUsedTag");
     }
 
     private enum DtoType {

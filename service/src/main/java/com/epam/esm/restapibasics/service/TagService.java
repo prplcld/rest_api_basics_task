@@ -13,4 +13,6 @@ public interface TagService {
     TagDto getById(Long id);
 
     void delete(Long id);
+
+    TagDto findMostWidelyUsedTag();
 }

@@ -13,7 +13,7 @@ public interface GiftCertificateDao {
 
     void delete(GiftCertificate giftCertificate);
 
-    void update(GiftCertificate giftCertificate);
+    GiftCertificate update(GiftCertificate giftCertificate);
 
     GiftCertificate create(GiftCertificate giftCertificate);
 }

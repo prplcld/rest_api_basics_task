@@ -3,11 +3,22 @@ package com.epam.esm.restapibasics.service.exception;
 public class EntityNotFoundException extends RuntimeException {
     private final long entityId;
 
-    public EntityNotFoundException(long entityId) {
-        this.entityId = entityId;
+    private final Class<?> causeEntity;
+
+    public EntityNotFoundException(Class<?> causeEntity) {
+        this(null, causeEntity);
     }
 
-    public long getEntityId() {
+    public EntityNotFoundException(Long entityId, Class<?> causeEntity) {
+        this.entityId = entityId;
+        this.causeEntity = causeEntity;
+    }
+
+    public Long getEntityId() {
         return entityId;
+    }
+
+    public Class<?> getCauseEntity() {
+        return causeEntity;
     }
 }

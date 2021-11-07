@@ -20,20 +20,18 @@ public class TagDaoImpl implements TagDao {
     private static final String NAME_PARAMETER = "name";
 
     private static final String SELECT_MOST_WIDELY_USED_TAG = "SELECT t.id, t.name " +
-            "FROM app_user AS " +
-            "INNER JOIN app_order AS o ON o.id_user = u.id " +
-            "INNER JOIN certificate_order AS co ON co.id_order = o.id " +
-            "INNER JOIN gift_certificate AS c ON c.id = co.id_certificate " +
-            "INNER JOIN certificate_tag AS ct ON ct.id_certificate = c.id " +
-            "INNER JOIN tag AS t ON ct.id_tag = t.id " +
-            "WHERE u.id = ( " +
-            "SELECT u.id " +
-            "FROM app_user AS u " +
-            "INNER JOIN app_order AS o ON o.id_user = u.id " +
+            "FROM user u " +
+            "INNER JOIN orders o ON o.user_id = u.id " +
+            "INNER JOIN certificates_in_order co ON co.order_id = o.id " +
+            "INNER JOIN gift_certificate c ON c.id = co.certificate_id " +
+            "INNER JOIN tags_in_certificate ct ON ct.certificate_id = c.id " +
+            "INNER JOIN tag t ON ct.tag_id = t.id " +
+            "WHERE u.id = (SELECT u.id " +
+            "FROM user u " +
+            "INNER JOIN orders o ON o.user_id = u.id " +
             "GROUP BY u.id " +
             "ORDER BY SUM(o.cost) DESC " +
-            "LIMIT 1 " +
-            ") " +
+            "LIMIT 1) " +
             "GROUP BY t.id, t.name " +
             "ORDER BY COUNT(t.name) DESC " +
             "LIMIT 1;";
@@ -112,7 +110,6 @@ public class TagDaoImpl implements TagDao {
         try {
             Tag tag = (Tag) entityManager.createNativeQuery(SELECT_MOST_WIDELY_USED_TAG, Tag.class)
                     .getSingleResult();
-
             return Optional.of(tag);
         } catch (NoResultException e) {
             return Optional.empty();

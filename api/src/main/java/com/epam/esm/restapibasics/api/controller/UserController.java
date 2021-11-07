@@ -1,5 +1,6 @@
 package com.epam.esm.restapibasics.api.controller;
 
+import com.epam.esm.restapibasics.api.hateoas.HateoasEntity;
 import com.epam.esm.restapibasics.model.dao.Paginator;
 import com.epam.esm.restapibasics.service.UserService;
 import com.epam.esm.restapibasics.service.dto.UserDto;
@@ -28,8 +29,9 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserDto> getUser(@PathVariable("id") Long id) {
+    public ResponseEntity<HateoasEntity<UserDto>> getUser(@PathVariable("id") Long id) {
         UserDto userDto = userService.findById(id);
-        return new ResponseEntity<>(userDto, OK);
+        HateoasEntity<UserDto> hateoasEntity = HateoasEntity.build(userDto);
+        return new ResponseEntity<>(hateoasEntity, OK);
     }
 }
