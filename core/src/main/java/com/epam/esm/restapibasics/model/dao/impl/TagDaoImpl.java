@@ -43,11 +43,7 @@ public class TagDaoImpl implements TagDao {
         this.entityManager = entityManager;
     }
 
-    /**
-     * Retrieve all tags from storage.
-     *
-     * @return list of {@link Tag}
-     */
+
     @Override
     public List<Tag> getAll(Paginator paginator) {
         return entityManager.createQuery(SELECT_ALL_SQL, Tag.class)
@@ -56,24 +52,13 @@ public class TagDaoImpl implements TagDao {
                 .getResultList();
     }
 
-    /**
-     * Retrieve tag by its unique id.
-     *
-     * @param id tag id
-     * @return {@link Tag}
-     */
     @Override
     public Optional<Tag> getById(Long id) {
         Tag tag = entityManager.find(Tag.class, id);
         return Optional.ofNullable(tag);
     }
 
-    /**
-     * Retrieve tag by its unique name.
-     *
-     * @param name tag name
-     * @return {@link Tag}
-     */
+
     @Override
     public Optional<Tag> getByName(String name) {
         TypedQuery<Tag> tagQuery = entityManager.createQuery(SELECT_BY_NAME, Tag.class);
@@ -83,23 +68,14 @@ public class TagDaoImpl implements TagDao {
                 .findFirst();
     }
 
-    /**
-     * Create a new tag in the storage.
-     *
-     * @param tag {@link Tag} instance
-     * @return unique id of the saved {@link Tag}
-     */
+
     @Override
     public Tag create(Tag tag) {
         entityManager.persist(tag);
         return tag;
     }
 
-    /**
-     * Delete an existing tag from the storage.
-     *
-     * @param id tag id
-     */
+
     @Override
     public void delete(Long id) {
         entityManager.remove(id);

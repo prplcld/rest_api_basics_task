@@ -4,7 +4,6 @@ import com.epam.esm.restapibasics.model.dao.GiftCertificateDao;
 import com.epam.esm.restapibasics.model.dao.OrderDao;
 import com.epam.esm.restapibasics.model.dao.Paginator;
 import com.epam.esm.restapibasics.model.dao.UserDao;
-import com.epam.esm.restapibasics.service.exception.EntityNotFoundException;
 import com.epam.esm.restapibasics.model.entity.GiftCertificate;
 import com.epam.esm.restapibasics.model.entity.Order;
 import com.epam.esm.restapibasics.model.entity.User;
@@ -12,6 +11,7 @@ import com.epam.esm.restapibasics.service.OrderService;
 import com.epam.esm.restapibasics.service.dto.OrderDto;
 import com.epam.esm.restapibasics.service.dto.util.DtoMappingUtil;
 import com.epam.esm.restapibasics.service.exception.EmptyOrderException;
+import com.epam.esm.restapibasics.service.exception.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -65,7 +65,7 @@ public class OrderServiceImpl implements OrderService {
         List<Long> certificateIds = orderDto.getCertificateIds();
 
         if (certificateIds.isEmpty()) {
-           throw new EmptyOrderException();
+            throw new EmptyOrderException();
         }
 
         User user = userDao.findById(userId)
@@ -74,7 +74,6 @@ public class OrderServiceImpl implements OrderService {
                 .map(id -> giftCertificateDao.getById(id)
                         .orElseThrow(() -> new EntityNotFoundException(id, GiftCertificate.class)))
                 .collect(Collectors.toList());
-
 
 
         LocalDateTime purchaseDate = LocalDateTime.now(UTC);

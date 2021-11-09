@@ -1,6 +1,7 @@
 package com.epam.esm.restapibasics.api.controller;
 
 import com.epam.esm.restapibasics.api.hateoas.HateoasEntity;
+import com.epam.esm.restapibasics.api.hateoas.HateoasListEntity;
 import com.epam.esm.restapibasics.model.dao.Paginator;
 import com.epam.esm.restapibasics.service.TagService;
 import com.epam.esm.restapibasics.service.dto.TagDto;
@@ -26,7 +27,7 @@ public class TagController {
      * Create a new tag.
      *
      * @param tagDto {@link TagDto} instance
-     * @return JSON {@link ResponseEntity}
+     * @return JSON {@link HateoasEntity}
      */
     @PostMapping
     public ResponseEntity<HateoasEntity<TagDto>> add(@RequestBody TagDto tagDto) {
@@ -51,7 +52,7 @@ public class TagController {
      * Retrieve tag by its unique id.
      *
      * @param id tag id
-     * @return JSON {@link ResponseEntity} object that contains {@link TagDto} object
+     * @return JSON {@link HateoasEntity} object that contains {@link TagDto} object
      */
     @GetMapping("/{id}")
     public ResponseEntity<HateoasEntity<TagDto>> get(@PathVariable Long id) {
@@ -63,15 +64,22 @@ public class TagController {
     /**
      * Retrieve all tags.
      *
-     * @return JSON {@link ResponseEntity} object that contains list of {@link TagDto}
+     * @return JSON {@link HateoasListEntity} object that contains list of {@link TagDto}
      */
     @GetMapping()
-    public ResponseEntity<List<TagDto>> getAll(@RequestParam(required = false) Integer page,
-                                               @RequestParam(required = false) Integer amount) {
+    public ResponseEntity<HateoasListEntity<TagDto>> getAll(@RequestParam(required = false) Integer page,
+                                                            @RequestParam(required = false) Integer amount) {
+
         List<TagDto> tagDtos = tagService.getAll(new Paginator(page, amount));
-        return new ResponseEntity<>(tagDtos, HttpStatus.OK);
+        HateoasListEntity<TagDto> hateoasListEntity = HateoasListEntity.build(tagDtos, TagController.class);
+        return new ResponseEntity<>(hateoasListEntity, HttpStatus.OK);
     }
 
+    /**
+     * Retrieve the most widely used tag of a user with the highest cost of all orders.
+     *
+     * @return JSON {@link ResponseEntity} object that contains {@link HateoasEntity} object
+     */
     @GetMapping("/most_used_tag")
     public ResponseEntity<HateoasEntity<TagDto>> getMostWidelyTag() {
         TagDto tagDto = tagService.findMostWidelyUsedTag();

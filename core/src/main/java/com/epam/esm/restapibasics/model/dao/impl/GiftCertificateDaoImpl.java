@@ -16,15 +16,6 @@ import java.util.Optional;
 @Repository
 public class GiftCertificateDaoImpl implements GiftCertificateDao {
 
-    private static final String BASE_SELECT_CERTIFICATES_SQL = "SELECT DISTINCT g.id, g.name, description, price, duration, create_date, last_update_date " +
-            "FROM gift_certificate g " +
-            "LEFT OUTER JOIN tags_in_certificate tc " +
-            "ON tc.certificate_id = g.id " +
-            "LEFT OUTER JOIN tag t " +
-            "ON tc.tag_id = t.id " +
-            "%s " +
-            "%s";
-
     private static final String TAGS = "tags";
     private static final String ID = "id";
     private static final String NAME = "name";
@@ -44,36 +35,21 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
     }
 
 
-    /**
-     * Create a new certificate in the storage.
-     *
-     * @param giftCertificate {@link GiftCertificate} instance
-     * @return unique id of the saved {@link GiftCertificate}
-     */
+
     @Override
     public GiftCertificate create(GiftCertificate giftCertificate) {
         entityManager.persist(giftCertificate);
         return giftCertificate;
     }
 
-    /**
-     * Retrieve certificate by its unique id.
-     *
-     * @param id certificate id
-     * @return {@link GiftCertificate}
-     */
+
     @Override
     public Optional<GiftCertificate> getById(Long id) {
         GiftCertificate giftCertificate = entityManager.find(GiftCertificate.class, id);
         return Optional.ofNullable(giftCertificate);
     }
 
-    /**
-     * Retrieve all certificates.
-     *
-     *
-     * @return list of{@link GiftCertificate}
-     */
+
     @Override
     public List<GiftCertificate> find(Paginator paginator, Map<String, SearchParameter> parameters) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
@@ -106,7 +82,6 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
 
         List<String> tagNames = null;
         for(Map.Entry<String, SearchParameter> param : parameters.entrySet()) {
-            String key = param.getKey();
             SearchParameter values = param.getValue();
             if (values.getType() == SearchParameterType.TAGS) {
                 tagNames = values.getValue();
@@ -114,7 +89,7 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
         }
 
         if (tagNames != null) {
-            Predicate inPredicate = join.get("name").in(tagNames);
+            Predicate inPredicate = join.get(NAME).in(tagNames);
             predicates.add(inPredicate);
 
             criteriaQuery = criteriaQuery
@@ -158,21 +133,14 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
         criteriaQuery.orderBy(order);
     }
 
-    /**
-     * Delete an existing certificate from the storage.
-     *
-     */
+
     @Override
     public void delete(GiftCertificate giftCertificate) {
         entityManager.remove(giftCertificate);
     }
 
 
-    /**
-     * Update an existing certificate in the storage.
-     *
-     * @param giftCertificate {@link GiftCertificate} instance
-     */
+
     @Override
     public GiftCertificate update(GiftCertificate giftCertificate) {
         entityManager.merge(giftCertificate);

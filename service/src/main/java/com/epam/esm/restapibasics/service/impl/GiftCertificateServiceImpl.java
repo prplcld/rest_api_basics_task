@@ -107,7 +107,6 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     @Transactional(rollbackFor = Exception.class, timeout = 30)
     @Override
     public GiftCertificateDto update(GiftCertificateDto giftCertificateDto) {
-        //FIXME add tag
         Long certificateId = giftCertificateDto.getId();
         GiftCertificate giftCertificate = giftCertificateDao.getById(certificateId)
                 .orElseThrow(() -> new EntityNotFoundException(certificateId, GiftCertificate.class));

@@ -53,6 +53,12 @@ public class LinkBuilder {
         return links;
     }
 
+    public static <T extends BaseDto> List<Link> buildListLinks(Class<?> controller) {
+        List<Link> links = new ArrayList<>();
+        links.add(buildControllerLink(controller, resourceRel));
+        return links;
+    }
+
     private static <T extends BaseDto> Link buildSelfLink(Class<?> controller, T dto) {
         return linkTo(controller)
                 .slash(dto.getId())

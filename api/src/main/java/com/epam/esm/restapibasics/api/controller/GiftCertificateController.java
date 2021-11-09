@@ -1,13 +1,13 @@
 package com.epam.esm.restapibasics.api.controller;
 
 import com.epam.esm.restapibasics.api.hateoas.HateoasEntity;
+import com.epam.esm.restapibasics.api.hateoas.HateoasListEntity;
 import com.epam.esm.restapibasics.model.dao.OrderType;
 import com.epam.esm.restapibasics.model.dao.Paginator;
 import com.epam.esm.restapibasics.model.dao.SearchParameter;
 import com.epam.esm.restapibasics.model.dao.SearchParameterType;
 import com.epam.esm.restapibasics.service.GiftCertificateService;
 import com.epam.esm.restapibasics.service.dto.GiftCertificateDto;
-import com.epam.esm.restapibasics.service.dto.TagDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/certificates")
@@ -34,21 +33,20 @@ public class GiftCertificateController {
      * Retrieve certificates according to specified parameters.
      * All parameters are optional, so if they are not present, all certificates will be retrieved.
      *
-     * @return JSON {@link ResponseEntity} object that contains list of {@link GiftCertificateDto}
+     * @return JSON {@link ResponseEntity} object that contains list of {@link HateoasListEntity} objects
      */
     @GetMapping()
-    public ResponseEntity<List<GiftCertificateDto>> find(@RequestParam(required = false) String name,
-                                                         @RequestParam(required = false) String description,
-                                                         @RequestParam(required = false) OrderType sortByDate,
-                                                         @RequestParam(required = false) OrderType sortByName,
-                                                         @RequestParam(required = false) List<TagDto> tags,
-                                                         @RequestParam(required = false) Integer page,
-                                                         @RequestParam(required = false) Integer amount) {
+    public ResponseEntity<HateoasListEntity<GiftCertificateDto>> find(@RequestParam(required = false) String name,
+                                                  @RequestParam(required = false) String description,
+                                                  @RequestParam(required = false) OrderType sortByDate,
+                                                  @RequestParam(required = false) OrderType sortByName,
+                                                  @RequestParam(required = false) List<String> tags,
+                                                  @RequestParam(required = false) Integer page,
+                                                  @RequestParam(required = false) Integer amount) {
 
         Map<String, SearchParameter> params = new HashMap<>();
         if (tags != null) {
-            List<String> tagNames = tags.stream().map(TagDto::getName).collect(Collectors.toList());
-            SearchParameter tagSearch = new SearchParameter(SearchParameterType.TAGS, tagNames);
+            SearchParameter tagSearch = new SearchParameter(SearchParameterType.TAGS, tags);
             params.put("tags", tagSearch);
         }
 
@@ -66,15 +64,30 @@ public class GiftCertificateController {
             params.put("description", nameSearch);
         }
 
+        if(sortByDate != null) {
+            List<String> values = new ArrayList<>();
+            values.add(sortByDate.name());
+            SearchParameter sortParameter = new SearchParameter(SearchParameterType.ORDER_BY, values);
+            params.put("createDate", sortParameter);
+        }
+
+        if (sortByName != null) {
+            List<String> values = new ArrayList<>();
+            values.add(sortByName.name());
+            SearchParameter sortParameter = new SearchParameter(SearchParameterType.ORDER_BY, values);
+            params.put("name", sortParameter);
+        }
+
         List<GiftCertificateDto> certificates = giftCertificateService.getAll(new Paginator(page, amount), params);
-        return new ResponseEntity<>(certificates, HttpStatus.OK);
+        HateoasListEntity<GiftCertificateDto> hateoasListEntity = HateoasListEntity.build(certificates, GiftCertificateController.class);
+        return new ResponseEntity<>(hateoasListEntity, HttpStatus.OK);
     }
 
     /**
      * Retrieve certificate by its unique id.
      *
      * @param id certificate id
-     * @return JSON {@link ResponseEntity} object that contains {@link GiftCertificateDto} object
+     * @return JSON {@link ResponseEntity} object that contains {@link HateoasEntity} object
      */
     @GetMapping("/{id}")
     public ResponseEntity<HateoasEntity<GiftCertificateDto>> getById(@PathVariable Long id) {
@@ -87,7 +100,7 @@ public class GiftCertificateController {
      * Create a new certificate.
      *
      * @param giftCertificate {@link GiftCertificateDto} instance
-     * @return JSON {@link ResponseEntity} object that contains created {@link GiftCertificateDto} object
+     * @return JSON {@link ResponseEntity} object that contains created {@link HateoasEntity} object
      */
     @PostMapping
     public ResponseEntity<HateoasEntity<GiftCertificateDto>> add(@RequestBody GiftCertificateDto giftCertificate) {
@@ -112,7 +125,7 @@ public class GiftCertificateController {
      * Update an existing certificate.
      *
      * @param id             certificate id
-     * @return JSON {@link ResponseEntity}
+     * @return JSON {@link HateoasEntity}
      */
     @PutMapping("/{id}")
     public ResponseEntity<HateoasEntity<GiftCertificateDto>> update(@RequestBody GiftCertificateDto giftCertificate, @PathVariable Long id) {

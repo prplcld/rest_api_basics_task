@@ -23,6 +23,7 @@ import java.util.Optional;
 import static java.time.ZoneOffset.UTC;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -47,8 +48,34 @@ class GiftCertificateServiceImplTest {
     }
 
     @Test
-    void testFind() {
+    void testCreate() {
+        GiftCertificateDto expectedDto = provideCertificateDto();
+        GiftCertificate certificate = provideCertificate();
 
+        when(giftCertificateDao.create(any(GiftCertificate.class))).thenReturn(certificate);
+        GiftCertificateDto actualDto = certificateService.create(expectedDto);
+
+
+        verify(giftCertificateDao).create(certificate);
+        assertEquals(expectedDto, actualDto);
+    }
+
+    @Test
+    void testDelete() {
+        GiftCertificate certificate = provideCertificate();
+        long certificateId = 1;
+        when(giftCertificateDao.getById(certificateId)).thenReturn(Optional.of(certificate));
+
+        certificateService.delete(certificateId);
+        verify(giftCertificateDao).delete(certificate);
+    }
+
+    @Test
+    void testDeleteWhenCertificateNotFound() {
+        long certificateId = 1;
+        when(giftCertificateDao.getById(certificateId)).thenReturn(Optional.empty());
+
+        assertThrows(EntityNotFoundException.class, () -> certificateService.delete(certificateId));
     }
 
     @Test
@@ -101,7 +128,7 @@ class GiftCertificateServiceImplTest {
         certificateDto.setCreateDate(INITIAL_DATE);
         certificateDto.setLastUpdateDate(INITIAL_DATE);
 
-        certificateDto.setTags(provideTagNames());
+        certificateDto.setTags(provideTagDtos());
 
         return certificateDto;
     }
@@ -123,7 +150,7 @@ class GiftCertificateServiceImplTest {
         }};
     }
 
-    private List<TagDto> provideTagNames() {
+    private List<TagDto> provideTagDtos() {
         return new ArrayList<>() {{
             for(Tag t : provideTags()) {
                 add(DtoMappingUtil.mapToTagDto(t));
