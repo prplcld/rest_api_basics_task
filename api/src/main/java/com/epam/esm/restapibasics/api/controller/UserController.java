@@ -1,7 +1,9 @@
 package com.epam.esm.restapibasics.api.controller;
 
-import com.epam.esm.restapibasics.api.hateoas.HateoasEntity;
-import com.epam.esm.restapibasics.api.hateoas.HateoasListEntity;
+import com.epam.esm.restapibasics.api.hateoas.UserHateoasAssembler;
+import com.epam.esm.restapibasics.api.hateoas.UserListHateoasAssembler;
+import com.epam.esm.restapibasics.api.hateoas.model.UserHateoasEntity;
+import com.epam.esm.restapibasics.api.hateoas.model.UserListHateoasEntity;
 import com.epam.esm.restapibasics.model.dao.Paginator;
 import com.epam.esm.restapibasics.service.UserService;
 import com.epam.esm.restapibasics.service.dto.UserDto;
@@ -25,26 +27,29 @@ public class UserController {
     /**
      * Retrieve all users.
      *
-     * @return JSON {@link ResponseEntity} object that contains list of {@link HateoasListEntity} objects
+     * @return JSON {@link ResponseEntity} object that contains list of {@link List<UserDto>} objects
      */
     @GetMapping
-    public ResponseEntity<HateoasListEntity<UserDto>> getAll(@RequestParam(required = false) Integer page,
-                                                             @RequestParam(required = false) Integer amount) {
+    public ResponseEntity<UserListHateoasEntity> getAll(@RequestParam(required = false) Integer page,
+                                                        @RequestParam(required = false) Integer amount) {
         List<UserDto> users = userService.findAll(new Paginator(page, amount));
-        HateoasListEntity<UserDto> hateoasListEntity = HateoasListEntity.build(users, UserController.class);
-        return new ResponseEntity<>(hateoasListEntity, OK);
+
+        UserListHateoasAssembler userListHateoasAssembler = new UserListHateoasAssembler();
+        UserListHateoasEntity userListHateoasEntity = userListHateoasAssembler.toModel(users);
+        return new ResponseEntity<>(userListHateoasEntity, OK);
     }
 
     /**
      * Retrieve user by its unique id.
      *
      * @param id user id
-     * @return JSON {@link ResponseEntity} object that contains {@link HateoasEntity} object
+     * @return JSON {@link ResponseEntity} object that contains {@link UserHateoasEntity} object
      */
     @GetMapping("/{id}")
-    public ResponseEntity<HateoasEntity<UserDto>> getUser(@PathVariable("id") Long id) {
+    public ResponseEntity<UserHateoasEntity> getUser(@PathVariable("id") Long id) {
         UserDto userDto = userService.findById(id);
-        HateoasEntity<UserDto> hateoasEntity = HateoasEntity.build(userDto);
-        return new ResponseEntity<>(hateoasEntity, OK);
+        UserHateoasAssembler userHateoasAssembler = new UserHateoasAssembler();
+        UserHateoasEntity userHateoasEntity = userHateoasAssembler.toModel(userDto);
+        return new ResponseEntity<>(userHateoasEntity, OK);
     }
 }

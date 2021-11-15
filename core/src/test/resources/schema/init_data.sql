@@ -1,3 +1,5 @@
+USE certificates_db;
+
 INSERT INTO gift_certificate (name, description, price, duration, create_date, last_update_date)
 VALUES ('certificate1', 'certificate1', 1, 1, '2021-09-25 00:00:00', '2021-09-25 00:00:00');
 

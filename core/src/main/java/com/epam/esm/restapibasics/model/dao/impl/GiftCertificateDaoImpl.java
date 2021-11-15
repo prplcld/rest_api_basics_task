@@ -4,6 +4,7 @@ import com.epam.esm.restapibasics.model.dao.*;
 import com.epam.esm.restapibasics.model.entity.GiftCertificate;
 import com.epam.esm.restapibasics.model.entity.Tag;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -30,11 +31,8 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
     private final EntityManager entityManager;
 
     public GiftCertificateDaoImpl(EntityManager entityManager) {
-
         this.entityManager = entityManager;
     }
-
-
 
     @Override
     public GiftCertificate create(GiftCertificate giftCertificate) {

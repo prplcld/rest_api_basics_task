@@ -22,6 +22,7 @@ public class Order {
     private Long id;
 
     private BigDecimal cost;
+    @Column(name = "purchase_date")
     private LocalDateTime purchaseDate;
 
     @ManyToOne

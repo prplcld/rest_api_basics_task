@@ -1,13 +1,17 @@
 package com.epam.esm.restapibasics.model.dao;
 
+import com.epam.esm.restapibasics.model.dao.config.DatabaseConfig;
 import com.epam.esm.restapibasics.model.entity.GiftCertificate;
 import com.epam.esm.restapibasics.model.entity.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -16,17 +20,17 @@ import java.util.stream.Collectors;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@DataJpaTest
-@ContextConfiguration(classes = TestConfig.class)
-@EntityScan(basePackages = {"com.epam.esm.restapibasics"})
-@TestPropertySource(properties = {
-        "spring.jpa.defer-datasource-initialization=true",
-        "spring.sql.init.data-locations=classpath:schema/init_data.sql"
-})
+@ExtendWith(SpringExtension.class)
+@ComponentScan("com.epam.esm")
+@ContextConfiguration(classes = DatabaseConfig.class)
+@ActiveProfiles(resolver = TestProfileResolver.class)
+@Sql(scripts = "classpath:schema/clear.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+@Sql(scripts = {"classpath:schema/init.sql", "classpath:schema/init_data.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 public class GiftCertificateDaoImplTest {
 
     @Autowired
     private GiftCertificateDao giftCertificateDao;
+
 
     @Test
     void testFindById() {
@@ -133,5 +137,4 @@ public class GiftCertificateDaoImplTest {
 
         assertTrue(giftCertificateDao.getById(1L).isEmpty());
     }
-
 }

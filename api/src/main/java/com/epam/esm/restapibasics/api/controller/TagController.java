@@ -1,7 +1,9 @@
 package com.epam.esm.restapibasics.api.controller;
 
-import com.epam.esm.restapibasics.api.hateoas.HateoasEntity;
-import com.epam.esm.restapibasics.api.hateoas.HateoasListEntity;
+import com.epam.esm.restapibasics.api.hateoas.TagHateoasAssembler;
+import com.epam.esm.restapibasics.api.hateoas.TagListHateoasAssembler;
+import com.epam.esm.restapibasics.api.hateoas.model.TagHateoasEntity;
+import com.epam.esm.restapibasics.api.hateoas.model.TagListHateoasEntity;
 import com.epam.esm.restapibasics.model.dao.Paginator;
 import com.epam.esm.restapibasics.service.TagService;
 import com.epam.esm.restapibasics.service.dto.TagDto;
@@ -27,13 +29,14 @@ public class TagController {
      * Create a new tag.
      *
      * @param tagDto {@link TagDto} instance
-     * @return JSON {@link HateoasEntity}
+     * @return JSON {@link TagHateoasEntity}
      */
     @PostMapping
-    public ResponseEntity<HateoasEntity<TagDto>> add(@RequestBody TagDto tagDto) {
+    public ResponseEntity<TagHateoasEntity> add(@RequestBody TagDto tagDto) {
         TagDto tag = tagService.create(tagDto);
-        HateoasEntity<TagDto> hateoasEntity = HateoasEntity.build(tag);
-        return new ResponseEntity<>(hateoasEntity, HttpStatus.OK);
+        TagHateoasAssembler tagHateoasAssembler = new TagHateoasAssembler();
+        TagHateoasEntity tagHateoasEntity = tagHateoasAssembler.toModel(tag);
+        return new ResponseEntity<>(tagHateoasEntity, HttpStatus.OK);
     }
 
     /**
@@ -52,38 +55,43 @@ public class TagController {
      * Retrieve tag by its unique id.
      *
      * @param id tag id
-     * @return JSON {@link HateoasEntity} object that contains {@link TagDto} object
+     * @return JSON {@link TagHateoasEntity} object that contains {@link TagDto} object
      */
     @GetMapping("/{id}")
-    public ResponseEntity<HateoasEntity<TagDto>> get(@PathVariable Long id) {
+    public ResponseEntity<TagHateoasEntity> get(@PathVariable Long id) {
         TagDto tagDto = tagService.getById(id);
-        HateoasEntity<TagDto> hateoasEntity = HateoasEntity.build(tagDto);
-        return new ResponseEntity<>(hateoasEntity, HttpStatus.OK);
+        TagHateoasAssembler tagHateoasAssembler = new TagHateoasAssembler();
+        TagHateoasEntity tagHateoasEntity = tagHateoasAssembler.toModel(tagDto);
+        return new ResponseEntity<>(tagHateoasEntity, HttpStatus.OK);
     }
 
     /**
      * Retrieve all tags.
      *
-     * @return JSON {@link HateoasListEntity} object that contains list of {@link TagDto}
+     * @return JSON {@link TagListHateoasEntity} object that contains list of {@link TagDto}
      */
     @GetMapping()
-    public ResponseEntity<HateoasListEntity<TagDto>> getAll(@RequestParam(required = false) Integer page,
-                                                            @RequestParam(required = false) Integer amount) {
+    public ResponseEntity<TagListHateoasEntity> getAll(@RequestParam(required = false) Integer page,
+                                                       @RequestParam(required = false) Integer amount) {
 
         List<TagDto> tagDtos = tagService.getAll(new Paginator(page, amount));
-        HateoasListEntity<TagDto> hateoasListEntity = HateoasListEntity.build(tagDtos, TagController.class);
-        return new ResponseEntity<>(hateoasListEntity, HttpStatus.OK);
+
+        TagListHateoasAssembler tagListHateoasAssembler = new TagListHateoasAssembler();
+        TagListHateoasEntity tagListHateoasEntity = tagListHateoasAssembler.toModel(tagDtos);
+
+        return new ResponseEntity<>(tagListHateoasEntity, HttpStatus.OK);
     }
 
     /**
      * Retrieve the most widely used tag of a user with the highest cost of all orders.
      *
-     * @return JSON {@link ResponseEntity} object that contains {@link HateoasEntity} object
+     * @return JSON {@link ResponseEntity} object that contains {@link TagHateoasEntity} object
      */
     @GetMapping("/most_used_tag")
-    public ResponseEntity<HateoasEntity<TagDto>> getMostWidelyTag() {
+    public ResponseEntity<TagHateoasEntity> getMostWidelyTag() {
         TagDto tagDto = tagService.findMostWidelyUsedTag();
-        HateoasEntity<TagDto> hateoasEntity = HateoasEntity.build(tagDto);
-        return new ResponseEntity<>(hateoasEntity, HttpStatus.OK);
+        TagHateoasAssembler tagHateoasAssembler = new TagHateoasAssembler();
+        TagHateoasEntity tagHateoasEntity = tagHateoasAssembler.toModel(tagDto);
+        return new ResponseEntity<>(tagHateoasEntity, HttpStatus.OK);
     }
 }

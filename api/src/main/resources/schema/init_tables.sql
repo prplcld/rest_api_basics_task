@@ -51,7 +51,7 @@ CREATE TABLE certificates_in_order
 
 CREATE TABLE audit
 (
-    id          BIGSERIAL PRIMARY KEY,
+    id          BIGINT PRIMARY KEY,
     operation   VARCHAR(20),
     entity_name VARCHAR(50),
     timestamp   DATETIME

@@ -24,12 +24,7 @@ public class TagServiceImpl implements TagService {
         this.tagDao = tagDao;
     }
 
-    /**
-     * Adds new tag.
-     *
-     * @param tagDto tag object to be added.
-     * @return tag id value.
-     */
+
     @Transactional
     public TagDto create(TagDto tagDto) {
         Tag tag = DtoMappingUtil.mapToTag(tagDto);
@@ -40,11 +35,6 @@ public class TagServiceImpl implements TagService {
         return DtoMappingUtil.mapToTagDto(tagDao.create(tag));
     }
 
-    /**
-     * Gets all  tags.
-     *
-     * @return list of {@link TagDto}
-     */
     public List<TagDto> getAll(Paginator paginator) {
         return tagDao.getAll(paginator)
                 .stream()
@@ -52,22 +42,13 @@ public class TagServiceImpl implements TagService {
                 .collect(Collectors.toList());
     }
 
-    /**
-     * Gets tag by id.
-     *
-     * @param id tag id value.
-     * @return {@link TagDto}
-     */
+
     public TagDto getById(Long id) {
         Optional<Tag> tag = tagDao.getById(id);
         return tag.map(DtoMappingUtil::mapToTagDto).orElseThrow(() -> new EntityNotFoundException(id, Tag.class));
     }
 
-    /**
-     * Deletes tag by id.
-     *
-     * @param id tag id value.
-     */
+
     @Transactional
     public void delete(Long id) {
         Tag tag = tagDao.getById(id)

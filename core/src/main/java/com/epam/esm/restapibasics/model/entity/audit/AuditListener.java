@@ -1,10 +1,6 @@
 package com.epam.esm.restapibasics.model.entity.audit;
 
-import org.springframework.context.annotation.Lazy;
-import org.springframework.context.annotation.Scope;
-import org.springframework.context.annotation.ScopedProxyMode;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
+import com.epam.esm.restapibasics.model.dao.config.BeansUtil;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PostPersist;
@@ -15,16 +11,8 @@ import java.time.LocalDateTime;
 import static com.epam.esm.restapibasics.model.entity.audit.Audit.Operation.*;
 import static java.time.ZoneOffset.UTC;
 
-
-@Transactional(propagation = Propagation.REQUIRES_NEW)
-@Scope(proxyMode = ScopedProxyMode.INTERFACES)
 public class AuditListener {
 
-    private EntityManager entityManager;
-
-    public AuditListener(@Lazy EntityManager entityManager) {
-        this.entityManager = entityManager;
-    }
 
     @PostPersist
     public void postPersist(Object entity) {
@@ -42,6 +30,7 @@ public class AuditListener {
     }
 
     private void createRecord(Object entity, Audit.Operation operation) {
+        EntityManager entityManager = BeansUtil.getBean(EntityManager.class);
         Audit auditEntity = new Audit();
         auditEntity.setEntityName(entity.getClass().getSimpleName());
         auditEntity.setTimestamp(LocalDateTime.now(UTC));

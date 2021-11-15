@@ -64,11 +64,11 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(errorDto, HttpStatus.CONFLICT);
     }
 
-    @ExceptionHandler(value = {Exception.class})
-    public ResponseEntity<Object> handleAllExceptions(Exception e) {
-        ErrorDto errorDto = new ErrorDto(e.getMessage(), 500);
-        return new ResponseEntity<>(errorDto, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+//    @ExceptionHandler(value = {Exception.class})
+//    public ResponseEntity<Object> handleAllExceptions(Exception e) {
+//        ErrorDto errorDto = new ErrorDto(e.getMessage(), 500);
+//        return new ResponseEntity<>(errorDto, HttpStatus.INTERNAL_SERVER_ERROR);
+//    }
 
     private String getMessage(String errorName) {
         Locale locale = LocaleContextHolder.getLocale();

@@ -34,12 +34,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
         this.tagDao = tagDao;
     }
 
-    /**
-     * Adds new gift certificate.
-     *
-     * @param giftCertificateDto certificate object to be added.
-     * @return certificate id value.
-     */
+
     @Transactional(rollbackFor = Exception.class, timeout = 30)
     @Override
     public GiftCertificateDto create(GiftCertificateDto giftCertificateDto) {
@@ -58,11 +53,6 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     }
 
 
-    /**
-     * Gets all certificates with their tags.
-     *
-     * @return list of {@link GiftCertificateDto}
-     */
     @Override
     public List<GiftCertificateDto> getAll(Paginator paginator, Map<String, SearchParameter> parameters) {
         List<GiftCertificate> giftCertificates = giftCertificateDao.find(paginator, parameters);
@@ -71,12 +61,6 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
                 .collect(Collectors.toList());
     }
 
-    /**
-     * Gets certificate by id.
-     *
-     * @param id certificate id value.
-     * @return {@link GiftCertificateDto}
-     */
     @Override
     public GiftCertificateDto getById(Long id) {
         GiftCertificate certificate = giftCertificateDao.getById(id).orElseThrow(() ->
@@ -86,11 +70,6 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     }
 
 
-    /**
-     * Delete an existing certificate.
-     *
-     * @param id certificate id
-     */
     @Transactional(rollbackFor = Exception.class, timeout = 30)
     @Override
     public void delete(Long id) {
@@ -99,11 +78,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
         giftCertificateDao.delete(certificate);
     }
 
-    /**
-     * Updates an existing certificate.
-     *
-     * @param giftCertificateDto certificate object
-     */
+
     @Transactional(rollbackFor = Exception.class, timeout = 30)
     @Override
     public GiftCertificateDto update(GiftCertificateDto giftCertificateDto) {

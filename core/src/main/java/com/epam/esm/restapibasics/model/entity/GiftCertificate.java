@@ -28,7 +28,9 @@ public class GiftCertificate {
     private String description;
     private BigDecimal price;
     private Integer duration;
+    @Column(name = "create_date")
     private LocalDateTime createDate;
+    @Column(name = "last_update_date")
     private LocalDateTime lastUpdateDate;
 
     @ManyToMany
