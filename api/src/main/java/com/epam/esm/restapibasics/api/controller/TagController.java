@@ -1,5 +1,10 @@
 package com.epam.esm.restapibasics.api.controller;
 
+import com.epam.esm.restapibasics.api.hateoas.TagHateoasAssembler;
+import com.epam.esm.restapibasics.api.hateoas.TagListHateoasAssembler;
+import com.epam.esm.restapibasics.api.hateoas.model.TagHateoasEntity;
+import com.epam.esm.restapibasics.api.hateoas.model.TagListHateoasEntity;
+import com.epam.esm.restapibasics.model.dao.Paginator;
 import com.epam.esm.restapibasics.service.TagService;
 import com.epam.esm.restapibasics.service.dto.TagDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/certificates/tag")
+@RequestMapping("/tags")
 public class TagController {
 
     private final TagService tagService;
@@ -24,12 +29,14 @@ public class TagController {
      * Create a new tag.
      *
      * @param tagDto {@link TagDto} instance
-     * @return JSON {@link ResponseEntity}
+     * @return JSON {@link TagHateoasEntity}
      */
     @PostMapping
-    public ResponseEntity<Long> add(@RequestBody TagDto tagDto) {
-        Long tagId = tagService.create(tagDto);
-        return new ResponseEntity<>(tagId, HttpStatus.OK);
+    public ResponseEntity<TagHateoasEntity> add(@RequestBody TagDto tagDto) {
+        TagDto tag = tagService.create(tagDto);
+        TagHateoasAssembler tagHateoasAssembler = new TagHateoasAssembler();
+        TagHateoasEntity tagHateoasEntity = tagHateoasAssembler.toModel(tag);
+        return new ResponseEntity<>(tagHateoasEntity, HttpStatus.OK);
     }
 
     /**
@@ -48,22 +55,43 @@ public class TagController {
      * Retrieve tag by its unique id.
      *
      * @param id tag id
-     * @return JSON {@link ResponseEntity} object that contains {@link TagDto} object
+     * @return JSON {@link TagHateoasEntity} object that contains {@link TagDto} object
      */
     @GetMapping("/{id}")
-    public ResponseEntity<TagDto> get(@PathVariable Long id) {
+    public ResponseEntity<TagHateoasEntity> get(@PathVariable Long id) {
         TagDto tagDto = tagService.getById(id);
-        return new ResponseEntity<>(tagDto, HttpStatus.OK);
+        TagHateoasAssembler tagHateoasAssembler = new TagHateoasAssembler();
+        TagHateoasEntity tagHateoasEntity = tagHateoasAssembler.toModel(tagDto);
+        return new ResponseEntity<>(tagHateoasEntity, HttpStatus.OK);
     }
 
     /**
      * Retrieve all tags.
      *
-     * @return JSON {@link ResponseEntity} object that contains list of {@link TagDto}
+     * @return JSON {@link TagListHateoasEntity} object that contains list of {@link TagDto}
      */
     @GetMapping()
-    public ResponseEntity<List<TagDto>> getAll() {
-        List<TagDto> tagDtos = tagService.getAll();
-        return new ResponseEntity<>(tagDtos, HttpStatus.OK);
+    public ResponseEntity<TagListHateoasEntity> getAll(@RequestParam(required = false) Integer page,
+                                                       @RequestParam(required = false) Integer amount) {
+
+        List<TagDto> tagDtos = tagService.getAll(new Paginator(page, amount));
+
+        TagListHateoasAssembler tagListHateoasAssembler = new TagListHateoasAssembler();
+        TagListHateoasEntity tagListHateoasEntity = tagListHateoasAssembler.toModel(tagDtos);
+
+        return new ResponseEntity<>(tagListHateoasEntity, HttpStatus.OK);
+    }
+
+    /**
+     * Retrieve the most widely used tag of a user with the highest cost of all orders.
+     *
+     * @return JSON {@link ResponseEntity} object that contains {@link TagHateoasEntity} object
+     */
+    @GetMapping("/most_used_tag")
+    public ResponseEntity<TagHateoasEntity> getMostWidelyTag() {
+        TagDto tagDto = tagService.findMostWidelyUsedTag();
+        TagHateoasAssembler tagHateoasAssembler = new TagHateoasAssembler();
+        TagHateoasEntity tagHateoasEntity = tagHateoasAssembler.toModel(tagDto);
+        return new ResponseEntity<>(tagHateoasEntity, HttpStatus.OK);
     }
 }

@@ -1,20 +1,45 @@
 package com.epam.esm.restapibasics.model.entity;
 
+import com.epam.esm.restapibasics.model.entity.audit.AuditListener;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
+@Entity
+@Table(name = "gift_certificate")
+@EntityListeners(AuditListener.class)
 public class GiftCertificate {
 
-    private Long Id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+
     private String name;
     private String description;
     private BigDecimal price;
     private Integer duration;
+    @Column(name = "create_date")
     private LocalDateTime createDate;
+    @Column(name = "last_update_date")
     private LocalDateTime lastUpdateDate;
+
+    @ManyToMany
+    @JoinTable(
+            name = "tags_in_certificate",
+            joinColumns = @JoinColumn(name = "certificate_id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id")
+    )
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    private List<Tag> tags = new ArrayList<>();
 }
