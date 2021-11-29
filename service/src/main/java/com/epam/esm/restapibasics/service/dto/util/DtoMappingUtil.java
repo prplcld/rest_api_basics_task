@@ -13,12 +13,17 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class DtoMappingUtil {
+    //FIXME user, role
+
+    private DtoMappingUtil() {
+
+    }
 
     public static UserDto mapToUserDto(User user) {
         UserDto userDto = new UserDto();
 
         userDto.setId(user.getId());
-        userDto.setName(user.getName());
+        userDto.setName(user.getUsername());
 
         return userDto;
     }

@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class UserDto {
+    //FIXME
 
     private Long id;
 
