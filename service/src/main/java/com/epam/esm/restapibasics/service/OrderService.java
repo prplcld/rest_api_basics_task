@@ -3,6 +3,7 @@ package com.epam.esm.restapibasics.service;
 import com.epam.esm.restapibasics.model.dao.Paginator;
 import com.epam.esm.restapibasics.service.dto.OrderDto;
 
+import java.security.Principal;
 import java.util.List;
 
 public interface OrderService {
@@ -37,5 +38,5 @@ public interface OrderService {
      * @param orderDto {@link OrderDto} instance (only {@code userId} and {@code certificateId} are required)
      * @return {@link OrderDto} object that represents created order
      */
-    OrderDto createOrder(OrderDto orderDto);
+    OrderDto createOrder(OrderDto orderDto, String username);
 }

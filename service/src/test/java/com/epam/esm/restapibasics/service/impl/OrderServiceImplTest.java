@@ -103,7 +103,7 @@ public class OrderServiceImplTest {
         when(giftCertificateDao.getById(anyLong())).thenReturn(Optional.of(certificate));
         when(orderDao.create(any(Order.class))).thenReturn(order);
 
-        orderService.createOrder(orderDto);
+        orderService.createOrder(orderDto, "user");
 
         verify(orderDao).create(orderCaptor.capture());
         Order capturedOrder = orderCaptor.getValue();

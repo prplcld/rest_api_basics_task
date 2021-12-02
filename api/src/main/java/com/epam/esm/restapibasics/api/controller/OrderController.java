@@ -9,8 +9,10 @@ import com.epam.esm.restapibasics.service.OrderService;
 import com.epam.esm.restapibasics.service.dto.OrderDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -67,8 +69,9 @@ public class OrderController {
      * @return JSON {@link ResponseEntity} object that contains {@link OrderHateoasEntity} object
      */
     @PostMapping
-    public ResponseEntity<OrderHateoasEntity> createOrder(@RequestBody OrderDto orderDto) {
-        OrderDto createdOrderDto = orderService.createOrder(orderDto);
+    public ResponseEntity<OrderHateoasEntity> createOrder(@RequestBody OrderDto orderDto, Principal principal) {
+        String username = principal.getName();
+        OrderDto createdOrderDto = orderService.createOrder(orderDto, username);
         OrderHateoasAssembler orderHateoasAssembler = new OrderHateoasAssembler();
         OrderHateoasEntity orderHateoasEntity = orderHateoasAssembler.toModel(createdOrderDto);
         return new ResponseEntity<>(orderHateoasEntity, HttpStatus.CREATED);

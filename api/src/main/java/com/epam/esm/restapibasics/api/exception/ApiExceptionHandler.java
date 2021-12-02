@@ -45,6 +45,9 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
             case "User" -> {
                 errorCode = 40404;
             }
+            case "Role" -> {
+                errorCode = 40405;
+            }
         }
         ErrorDto errorDto = new ErrorDto(String.format(message, e.getEntityId()), errorCode);
         return new ResponseEntity<>(errorDto, HttpStatus.NOT_FOUND);
@@ -64,11 +67,11 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(errorDto, HttpStatus.CONFLICT);
     }
 
-//    @ExceptionHandler(value = {Exception.class})
-//    public ResponseEntity<Object> handleAllExceptions(Exception e) {
-//        ErrorDto errorDto = new ErrorDto(e.getMessage(), 500);
-//        return new ResponseEntity<>(errorDto, HttpStatus.INTERNAL_SERVER_ERROR);
-//    }
+    @ExceptionHandler(value = {Exception.class})
+    public ResponseEntity<Object> handleAllExceptions(Exception e) {
+        ErrorDto errorDto = new ErrorDto(e.getMessage(), 500);
+        return new ResponseEntity<>(errorDto, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 
     private String getMessage(String errorName) {
         Locale locale = LocaleContextHolder.getLocale();

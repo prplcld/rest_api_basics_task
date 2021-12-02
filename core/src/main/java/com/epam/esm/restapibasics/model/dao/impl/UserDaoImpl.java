@@ -48,4 +48,10 @@ public class UserDaoImpl implements UserDao {
                 .stream()
                 .findFirst();
     }
+
+    @Override
+    public User create(User user) {
+        entityManager.persist(user);
+        return user;
+    }
 }

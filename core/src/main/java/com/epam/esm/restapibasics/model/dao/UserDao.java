@@ -23,4 +23,6 @@ public interface UserDao {
     Optional<User> findById(Long id);
 
     Optional<User> findByUsername(String name);
+
+    User create(User user);
 }
