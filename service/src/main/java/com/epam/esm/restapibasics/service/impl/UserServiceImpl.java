@@ -67,6 +67,13 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
+    public UserDto findByUsername(String username) {
+        Optional<User> user = userDao.findByUsername(username);
+        return user.map(DtoMappingUtil::mapToUserDto)
+                .orElseThrow(() -> new EntityNotFoundException(User.class));
+    }
+
+    @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<User> user = userDao.findByUsername(username);
         if (user.isPresent()) {

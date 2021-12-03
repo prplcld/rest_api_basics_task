@@ -34,7 +34,7 @@ public interface TagDao {
      * Delete an existing tag from the storage.
      *
      */
-    void delete(Long id);
+    void delete(Tag tag);
 
     /**
      * Retrieve tag by its unique name.

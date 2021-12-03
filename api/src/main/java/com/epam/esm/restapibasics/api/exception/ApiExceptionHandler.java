@@ -3,6 +3,7 @@ package com.epam.esm.restapibasics.api.exception;
 import com.epam.esm.restapibasics.service.exception.EmptyOrderException;
 import com.epam.esm.restapibasics.service.exception.EntityAlreadyExistsException;
 import com.epam.esm.restapibasics.service.exception.EntityNotFoundException;
+import com.epam.esm.restapibasics.service.exception.UnableToCreateOrderException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.context.support.ResourceBundleMessageSource;
@@ -20,6 +21,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     private static final String NOT_FOUND_ERROR = "entity_not_found";
     private static final String ENTITY_ALREADY_CREATED_ERROR = "entity_already_created";
     private static final String EMPTY_ORDER_ERROR = "empty_order";
+    private static final String UNABLE_TO_CREATE_ORDER = "unable_to_create_order";
 
     private ResourceBundleMessageSource messageSource;
 
@@ -67,6 +69,19 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(errorDto, HttpStatus.CONFLICT);
     }
 
+    @ExceptionHandler(value = {UnableToCreateOrderException.class})
+    public ResponseEntity<Object> handleUnableToCreateOrderException(UnableToCreateOrderException e) {
+        String message = getMessage(UNABLE_TO_CREATE_ORDER);
+        ErrorDto errorDto = new ErrorDto(message, 403);
+        return new ResponseEntity<>(errorDto, HttpStatus.FORBIDDEN);
+    }
+
+    @ExceptionHandler(value = {AuthorizationException.class})
+    public ResponseEntity<Object> handleAuthorizationException(AuthorizationException e) {
+        ErrorDto errorDto = new ErrorDto(e.getMessage(), 403);
+        return new ResponseEntity<>(errorDto, HttpStatus.FORBIDDEN);
+    }
+
     @ExceptionHandler(value = {Exception.class})
     public ResponseEntity<Object> handleAllExceptions(Exception e) {
         ErrorDto errorDto = new ErrorDto(e.getMessage(), 500);
@@ -77,6 +92,4 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         Locale locale = LocaleContextHolder.getLocale();
         return messageSource.getMessage(errorName, null, locale);
     }
-
-
 }

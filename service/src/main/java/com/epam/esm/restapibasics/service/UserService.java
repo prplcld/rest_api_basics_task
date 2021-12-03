@@ -24,4 +24,6 @@ public interface UserService {
     UserDto findById(Long id);
 
     UserDto register(CredentialsDto credentials);
+
+    UserDto findByUsername(String username);
 }

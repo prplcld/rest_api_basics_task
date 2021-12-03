@@ -9,7 +9,6 @@ import com.epam.esm.restapibasics.service.OrderService;
 import com.epam.esm.restapibasics.service.dto.OrderDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;

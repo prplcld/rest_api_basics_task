@@ -31,6 +31,8 @@ public class OrderServiceImpl implements OrderService {
     private final UserDao userDao;
     private final GiftCertificateDao giftCertificateDao;
 
+    private static final String USER_ROLE_NAME = "USER";
+
     public OrderServiceImpl(OrderDao orderDao, UserDao userDao, GiftCertificateDao giftCertificateDao) {
         this.orderDao = orderDao;
         this.userDao = userDao;
@@ -60,7 +62,7 @@ public class OrderServiceImpl implements OrderService {
         return DtoMappingUtil.mapToOrderDto(order);
     }
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public OrderDto createOrder(OrderDto orderDto, String username) {
         List<Long> certificateIds = orderDto.getCertificateIds();
@@ -69,15 +71,15 @@ public class OrderServiceImpl implements OrderService {
             throw new EmptyOrderException();
         }
 
-        long userId = orderDto.getUserId();
+        Long userId = orderDto.getUserId();
         Optional<User> userOptional = userDao.findByUsername(username);
        if (userOptional.isEmpty()) {
            throw new EntityNotFoundException(User.class);
        }
 
        User loggedInUser = userOptional.get();
-       if (loggedInUser.getRole().getName().equals("USER") &&  loggedInUser.getId() != userId) { //FIXME
-           throw new UnableToCreateOrderException();
+       if (loggedInUser.getRole().getName().equals(USER_ROLE_NAME) && !loggedInUser.getId().equals(userId)) {
+           throw new UnableToCreateOrderException("you have no permission to create this order");
        }
 
         User user = userDao.findById(userId)
