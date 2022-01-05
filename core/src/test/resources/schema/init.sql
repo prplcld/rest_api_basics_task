@@ -27,4 +27,4 @@ CREATE TABLE IF NOT EXISTS tags_in_certificate
     tag_id         BIGINT UNSIGNED NOT NULL,
     CONSTRAINT certificate_fk FOREIGN KEY (certificate_id) REFERENCES gift_certificate (id) ON DELETE NO ACTION,
     CONSTRAINT tag_fk FOREIGN KEY (tag_id) REFERENCES tag (id) ON DELETE NO ACTION
-    );
+);

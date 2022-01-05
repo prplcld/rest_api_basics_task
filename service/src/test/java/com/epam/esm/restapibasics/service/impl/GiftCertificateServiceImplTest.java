@@ -2,8 +2,11 @@ package com.epam.esm.restapibasics.service.impl;
 
 import com.epam.esm.restapibasics.model.dao.impl.GiftCertificateDaoImpl;
 import com.epam.esm.restapibasics.model.dao.impl.TagDaoImpl;
+import com.epam.esm.restapibasics.model.dao.impl.UserDaoImpl;
 import com.epam.esm.restapibasics.model.entity.GiftCertificate;
+import com.epam.esm.restapibasics.model.entity.Role;
 import com.epam.esm.restapibasics.model.entity.Tag;
+import com.epam.esm.restapibasics.model.entity.User;
 import com.epam.esm.restapibasics.service.dto.GiftCertificateDto;
 import com.epam.esm.restapibasics.service.dto.TagDto;
 import com.epam.esm.restapibasics.service.dto.util.DtoMappingUtil;
@@ -11,7 +14,9 @@ import com.epam.esm.restapibasics.service.exception.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.*;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
@@ -23,7 +28,6 @@ import java.util.Optional;
 import static java.time.ZoneOffset.UTC;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -41,24 +45,15 @@ class GiftCertificateServiceImplTest {
     @Mock
     private TagDaoImpl tagDao;
 
+    @Mock
+    private UserDaoImpl userDao;
+
 
     @BeforeAll
     static void setUp() {
         MockitoAnnotations.openMocks(GiftCertificateServiceImplTest.class);
     }
 
-    @Test
-    void testCreate() {
-        GiftCertificateDto expectedDto = provideCertificateDto();
-        GiftCertificate certificate = provideCertificate();
-
-        when(giftCertificateDao.create(any(GiftCertificate.class))).thenReturn(certificate);
-        GiftCertificateDto actualDto = certificateService.create(expectedDto);
-
-
-        verify(giftCertificateDao).create(certificate);
-        assertEquals(expectedDto, actualDto);
-    }
 
     @Test
     void testDelete() {
@@ -100,7 +95,18 @@ class GiftCertificateServiceImplTest {
         assertThrows(EntityNotFoundException.class, () -> certificateService.getById(certificateId));
     }
 
-
+    private User provideUser() {
+        User user = new User();
+        user.setId(1L);
+        user.setUsername("username");
+        user.setPassword("123");
+        user.setEmail("email");
+        Role role = new Role();
+        role.setId(1L);
+        role.setName("ADMIN");
+        user.setRole(role);
+        return user;
+    }
 
     private GiftCertificate provideCertificate() {
         GiftCertificate certificate = new GiftCertificate();
@@ -132,8 +138,6 @@ class GiftCertificateServiceImplTest {
 
         return certificateDto;
     }
-
-
 
     private List<Tag> provideTags() {
         Tag firstTag = new Tag();

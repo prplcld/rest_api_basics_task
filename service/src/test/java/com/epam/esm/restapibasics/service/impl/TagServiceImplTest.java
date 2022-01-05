@@ -99,7 +99,7 @@ class TagServiceImplTest {
 
         tagService.delete(tagId);
 
-        verify(tagDao).delete(tagId);
+        verify(tagDao).delete(tag);
     }
 
     @Test
