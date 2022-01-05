@@ -11,6 +11,7 @@ repositories {
 
 dependencies {
     implementation project(':core')
+    implementation 'org.springframework.boot:spring-boot-starter-security:2.5.5'
     compileOnly 'org.projectlombok:lombok:1.18.22'
     annotationProcessor 'org.projectlombok:lombok:1.18.22'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.0.1'

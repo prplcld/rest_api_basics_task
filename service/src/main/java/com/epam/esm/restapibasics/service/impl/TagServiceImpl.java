@@ -53,7 +53,7 @@ public class TagServiceImpl implements TagService {
     public void delete(Long id) {
         Tag tag = tagDao.getById(id)
                 .orElseThrow(() -> new EntityNotFoundException(id, Tag.class));
-        tagDao.delete(id);
+        tagDao.delete(tag);
     }
 
     @Override

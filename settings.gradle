@@ -9,5 +9,3 @@
 
 rootProject.name = 'rest_api_basics'
 include('api', 'core', 'service')
-
-

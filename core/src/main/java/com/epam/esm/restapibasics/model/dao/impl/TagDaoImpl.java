@@ -77,8 +77,8 @@ public class TagDaoImpl implements TagDao {
 
 
     @Override
-    public void delete(Long id) {
-        entityManager.remove(id);
+    public void delete(Tag tag) {
+        entityManager.remove(tag);
     }
 
     @Override

@@ -4,23 +4,34 @@ import com.epam.esm.restapibasics.model.entity.GiftCertificate;
 import com.epam.esm.restapibasics.model.entity.Order;
 import com.epam.esm.restapibasics.model.entity.Tag;
 import com.epam.esm.restapibasics.model.entity.User;
-import com.epam.esm.restapibasics.service.dto.GiftCertificateDto;
-import com.epam.esm.restapibasics.service.dto.OrderDto;
-import com.epam.esm.restapibasics.service.dto.TagDto;
-import com.epam.esm.restapibasics.service.dto.UserDto;
+import com.epam.esm.restapibasics.service.dto.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class DtoMappingUtil {
 
+    private DtoMappingUtil() {
+
+    }
+
     public static UserDto mapToUserDto(User user) {
         UserDto userDto = new UserDto();
 
         userDto.setId(user.getId());
-        userDto.setName(user.getName());
+        userDto.setUsername(user.getUsername());
+        userDto.setEmail(user.getEmail());
+        userDto.setRole(user.getRole().getName());
 
         return userDto;
+    }
+
+    public static User mapToUser(CredentialsDto credentials) {
+        User user = new User();
+        user.setUsername(credentials.getUsername());
+        user.setPassword(credentials.getPassword());
+        user.setEmail(credentials.getEmail());
+        return user;
     }
 
     public static Tag mapToTag(TagDto tagDto) {

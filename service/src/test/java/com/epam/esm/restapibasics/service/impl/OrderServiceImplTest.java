@@ -6,6 +6,7 @@ import com.epam.esm.restapibasics.model.dao.Paginator;
 import com.epam.esm.restapibasics.model.dao.UserDao;
 import com.epam.esm.restapibasics.model.entity.GiftCertificate;
 import com.epam.esm.restapibasics.model.entity.Order;
+import com.epam.esm.restapibasics.model.entity.Role;
 import com.epam.esm.restapibasics.model.entity.User;
 import com.epam.esm.restapibasics.service.dto.OrderDto;
 import com.epam.esm.restapibasics.service.exception.EntityNotFoundException;
@@ -103,7 +104,9 @@ public class OrderServiceImplTest {
         when(giftCertificateDao.getById(anyLong())).thenReturn(Optional.of(certificate));
         when(orderDao.create(any(Order.class))).thenReturn(order);
 
-        orderService.createOrder(orderDto);
+        when(userDao.findByUsername("user")).thenReturn(Optional.of(user));
+
+        orderService.createOrder(orderDto, "user");
 
         verify(orderDao).create(orderCaptor.capture());
         Order capturedOrder = orderCaptor.getValue();
@@ -160,7 +163,13 @@ public class OrderServiceImplTest {
     private User provideUser() {
         User user = new User();
         user.setId(1L);
-
+        user.setUsername("username");
+        user.setEmail("email");
+        user.setPassword("psw");
+        Role role = new Role();
+        role.setId(1L);
+        role.setName("ADMIN");
+        user.setRole(role);
         return user;
     }
 

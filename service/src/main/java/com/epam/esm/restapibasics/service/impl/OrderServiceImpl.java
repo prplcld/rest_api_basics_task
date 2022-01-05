@@ -12,12 +12,14 @@ import com.epam.esm.restapibasics.service.dto.OrderDto;
 import com.epam.esm.restapibasics.service.dto.util.DtoMappingUtil;
 import com.epam.esm.restapibasics.service.exception.EmptyOrderException;
 import com.epam.esm.restapibasics.service.exception.EntityNotFoundException;
+import com.epam.esm.restapibasics.service.exception.UnableToCreateOrderException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static java.time.ZoneOffset.UTC;
@@ -28,6 +30,8 @@ public class OrderServiceImpl implements OrderService {
     private final OrderDao orderDao;
     private final UserDao userDao;
     private final GiftCertificateDao giftCertificateDao;
+
+    private static final String USER_ROLE_NAME = "USER";
 
     public OrderServiceImpl(OrderDao orderDao, UserDao userDao, GiftCertificateDao giftCertificateDao) {
         this.orderDao = orderDao;
@@ -58,15 +62,25 @@ public class OrderServiceImpl implements OrderService {
         return DtoMappingUtil.mapToOrderDto(order);
     }
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @Override
-    public OrderDto createOrder(OrderDto orderDto) {
-        long userId = orderDto.getUserId();
+    public OrderDto createOrder(OrderDto orderDto, String username) {
         List<Long> certificateIds = orderDto.getCertificateIds();
 
         if (certificateIds.isEmpty()) {
             throw new EmptyOrderException();
         }
+
+        Long userId = orderDto.getUserId();
+        Optional<User> userOptional = userDao.findByUsername(username);
+       if (userOptional.isEmpty()) {
+           throw new EntityNotFoundException(User.class);
+       }
+
+       User loggedInUser = userOptional.get();
+       if (loggedInUser.getRole().getName().equals(USER_ROLE_NAME) && !loggedInUser.getId().equals(userId)) {
+           throw new UnableToCreateOrderException("you have no permission to create this order");
+       }
 
         User user = userDao.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException(userId, User.class));

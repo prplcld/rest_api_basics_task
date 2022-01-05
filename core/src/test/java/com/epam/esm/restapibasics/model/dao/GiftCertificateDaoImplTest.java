@@ -13,12 +13,12 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
 @ComponentScan("com.epam.esm")
@@ -44,8 +44,8 @@ public class GiftCertificateDaoImplTest {
         assertTrue(certificate.isEmpty());
     }
 
-
     @Test
+    @Transactional
     void testCreate() {
         LocalDateTime localDateTime = LocalDateTime.now();
         GiftCertificate giftCertificate = new GiftCertificate();
@@ -54,6 +54,7 @@ public class GiftCertificateDaoImplTest {
         giftCertificate.setDuration(10);
         giftCertificate.setCreateDate(localDateTime);
         giftCertificate.setLastUpdateDate(localDateTime);
+        giftCertificate.setPrice(BigDecimal.ONE);
         List<Tag> tagList = new ArrayList<>();
         Tag tag = new Tag();
         tag.setName("tag");
@@ -61,8 +62,7 @@ public class GiftCertificateDaoImplTest {
         giftCertificate.setTags(tagList);
 
         giftCertificateDao.create(giftCertificate);
-
-        assertEquals(5, giftCertificate.getId());
+        assertNull(giftCertificate.getId());
     }
 
 
@@ -128,13 +128,5 @@ public class GiftCertificateDaoImplTest {
                 .collect(Collectors.toList());
 
         assertEquals(expected, actual);
-    }
-
-    @Test
-    void testDelete() {
-        GiftCertificate certificate = giftCertificateDao.getById(1L).get();
-        giftCertificateDao.delete(certificate);
-
-        assertTrue(giftCertificateDao.getById(1L).isEmpty());
     }
 }

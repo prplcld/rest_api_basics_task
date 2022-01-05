@@ -15,7 +15,6 @@ public class LinkBuilder {
     private static final String resourceRel = "resource";
     private static final String mostUsedTag = "mostUsedTag";
 
-
     public static Link buildControllerLink(Class<?> controller) {
         return linkTo(controller)
                 .withRel(resourceRel);

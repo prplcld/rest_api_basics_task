@@ -21,4 +21,8 @@ public interface UserDao {
      * @return {@link User} wrapped by {@link Optional}
      */
     Optional<User> findById(Long id);
+
+    Optional<User> findByUsername(String name);
+
+    User create(User user);
 }

@@ -2,6 +2,7 @@ package com.epam.esm.restapibasics.service.impl;
 
 import com.epam.esm.restapibasics.model.dao.Paginator;
 import com.epam.esm.restapibasics.model.dao.UserDao;
+import com.epam.esm.restapibasics.model.entity.Role;
 import com.epam.esm.restapibasics.model.entity.User;
 import com.epam.esm.restapibasics.service.dto.UserDto;
 import com.epam.esm.restapibasics.service.exception.EntityNotFoundException;
@@ -67,17 +68,30 @@ public class UserServiceImplTest {
 
 
     private List<User> provideUsers() {
+        Role role = new Role();
+        role.setId(1L);
+        role.setName("ADMIN");
+
         User firstUser = new User();
         firstUser.setId(1L);
-        firstUser.setName("user1");
+        firstUser.setUsername("user1");
+        firstUser.setEmail("email1");
+        firstUser.setPassword("123");
+        firstUser.setRole(role);
 
         User secondUser = new User();
         secondUser.setId(2L);
-        secondUser.setName("user2");
+        secondUser.setUsername("user2");
+        secondUser.setEmail("email2");
+        secondUser.setPassword("123");
+        secondUser.setRole(role);
 
         User thirdUser = new User();
         thirdUser.setId(3L);
-        thirdUser.setName("user3");
+        thirdUser.setUsername("user3");
+        thirdUser.setEmail("email3");
+        thirdUser.setPassword("123");
+        thirdUser.setRole(role);
 
         return List.of(firstUser, secondUser, thirdUser);
     }
@@ -85,15 +99,21 @@ public class UserServiceImplTest {
     private List<UserDto> provideUserDtoList() {
         UserDto firstDto = new UserDto();
         firstDto.setId(1L);
-        firstDto.setName("user1");
+        firstDto.setUsername("user1");
+        firstDto.setEmail("email1");
+        firstDto.setRole("ADMIN");
 
         UserDto secondDto = new UserDto();
         secondDto.setId(2L);
-        secondDto.setName("user2");
+        secondDto.setUsername("user2");
+        secondDto.setEmail("email2");
+        secondDto.setRole("ADMIN");
 
         UserDto thirdDto = new UserDto();
         thirdDto.setId(3L);
-        thirdDto.setName("user3");
+        thirdDto.setUsername("user3");
+        thirdDto.setEmail("email3");
+        thirdDto.setRole("ADMIN");
 
         return List.of(firstDto, secondDto, thirdDto);
     }

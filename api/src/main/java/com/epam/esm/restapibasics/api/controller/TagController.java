@@ -10,8 +10,10 @@ import com.epam.esm.restapibasics.service.dto.TagDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -72,8 +74,7 @@ public class TagController {
      */
     @GetMapping()
     public ResponseEntity<TagListHateoasEntity> getAll(@RequestParam(required = false) Integer page,
-                                                       @RequestParam(required = false) Integer amount) {
-
+                                                       @RequestParam(required = false) Integer amount, Principal principal) {
         List<TagDto> tagDtos = tagService.getAll(new Paginator(page, amount));
 
         TagListHateoasAssembler tagListHateoasAssembler = new TagListHateoasAssembler();
