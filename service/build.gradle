@@ -1,5 +1,7 @@
 plugins {
     id 'java'
+    id "org.sonarqube" version "3.3"
+    id 'jacoco'
 }
 
 group 'com.epam.esm.rest_api_basics'
