@@ -24,7 +24,7 @@ pipeline {
         stage('Sonar Qube') {
             steps {
                 withSonarQubeEnv(installationName : 'sq') {
-                    gradlew('clean', 'jacocoTestReport', 'sonar')
+                    gradlew('clean', 'test', 'jacocoTestReport', 'sonar')
                 }
             }
         }
