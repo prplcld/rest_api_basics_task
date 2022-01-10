@@ -11,6 +11,12 @@ repositories {
     mavenCentral()
 }
 
+jacocoTestReport {
+    reports {
+        xml.required = true
+    }
+}
+
 dependencies {
     implementation project(':core')
     implementation 'org.springframework.boot:spring-boot-starter-security:2.5.5'

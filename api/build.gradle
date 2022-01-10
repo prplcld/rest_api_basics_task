@@ -9,6 +9,11 @@ plugins {
     id 'jacoco'
 }
 
+jacocoTestReport {
+    reports {
+        xml.required = true
+    }
+}
 
 dependencies {
     implementation project(':core')
