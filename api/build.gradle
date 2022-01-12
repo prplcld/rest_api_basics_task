@@ -7,6 +7,7 @@ plugins {
     id 'org.springframework.boot' version '2.5.5'
     id "org.sonarqube" version "3.3"
     id 'jacoco'
+    id 'war'
 }
 
 jacocoTestReport {
