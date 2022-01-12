@@ -6,32 +6,35 @@ pipeline {
     }
 
     stages {
-        stage('Compile') {
-            steps {
-                gradlew('clean', 'classes')
-            }
-        }
-        stage('Unit Tests') {
-            steps {
-                gradlew('test')
-            }
-            post {
-                always {
-                    junit '**/build/test-results/test/TEST-*.xml'
-                }
-            }
-        }
-        stage('Sonar Qube') {
-            steps {
-                withSonarQubeEnv(installationName : 'sq') {
-                    gradlew('clean', 'test', 'jacocoTestReport', 'sonar')
-                }
-            }
-        }
-        stage('Quality gate') {
-            steps {
-                waitForQualityGate abortPipeline: true
-            }
+//         stage('Compile') {
+//             steps {
+//                 gradlew('clean', 'classes')
+//             }
+//         }
+//         stage('Unit Tests') {
+//             steps {
+//                 gradlew('test')
+//             }
+//             post {
+//                 always {
+//                     junit '**/build/test-results/test/TEST-*.xml'
+//                 }
+//             }
+//         }
+//         stage('Sonar Qube') {
+//             steps {
+//                 withSonarQubeEnv(installationName : 'sq') {
+//                     gradlew('clean', 'test', 'jacocoTestReport', 'sonar')
+//                 }
+//             }
+//         }
+//         stage('Quality gate') {
+//             steps {
+//                 waitForQualityGate abortPipeline: true
+//             }
+//         }
+        stage('Run') {
+            gradlew('bootRun')
         }
     }
 }
