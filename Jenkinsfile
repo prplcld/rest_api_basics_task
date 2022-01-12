@@ -35,6 +35,7 @@ pipeline {
         }
         stage('Deploy') {
             steps {
+                gradlew('bootWar')
                 deploy adapters: [tomcat9(credentialsId: 'tomcat', path: '', url: 'http://localhost:8080')], contextPath: 'certificates', war: '**/*.war'
             }
         }
