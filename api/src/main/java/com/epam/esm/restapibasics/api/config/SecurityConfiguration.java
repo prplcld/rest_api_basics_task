@@ -38,6 +38,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/registration", "/refresh").permitAll()
                 .antMatchers(HttpMethod.GET, "/certificates").permitAll()
+                .antMatchers(HttpMethod.GET, "/certificates/{id}").permitAll()
                 .antMatchers(HttpMethod.GET).hasAnyAuthority("USER", "ADMIN", "ROLE_ADMIN", "ROLE_USER")
                 .antMatchers(HttpMethod.POST, "/orders").hasAnyAuthority("USER", "ADMIN")
                 .anyRequest().hasAnyAuthority("ADMIN");
