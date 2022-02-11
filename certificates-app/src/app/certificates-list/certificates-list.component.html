@@ -1,0 +1,98 @@
+<app-navbar></app-navbar>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css" integrity="sha256-3sPp8BkKUE7QyPSl6VfBByBroQbKxKG7tsusY2mhbVY=" crossorigin="anonymous" />
+
+<div class="container p-3">
+    <div class="row">
+      <div class="col-12">
+        <form [formGroup]="form" (submit)="submit()">
+          <div class="card">
+            <div class="card-header">Create Certificate</div>
+            <div class="card-body">
+              <div class="row">
+                <div class="form-group col-6">
+                  <label>Name</label>
+                  <input class="form-control" formControlName="name" type="text">
+                  <span class="text-danger" *ngIf="form.controls['name'].touched && form.controls['name'].hasError('required')">
+                    Name is required! </span>
+                </div>
+                <div class="form-group col-6">
+                  <label>Description</label>
+                  <input class="form-control" formControlName="description" type="text">
+                  <span class="text-danger" *ngIf="form.controls['description'].touched && form.controls['description'].hasError('required')">
+                    Description is required! </span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="card-header">Tags</div>
+            <div class="card-body" formArrayName="tags">
+              <div class="row">
+                <div class="col-6" *ngFor="let tag of tagsFormGroup.controls; let i = index;">
+                  <div [formGroupName]="i" class="row">
+                    
+                    <div class="form-group col-6">
+                      <label>Tag</label>
+                      <input class="form-control" formControlName="name" type="text">
+                      <span class="text-danger" *ngIf="getTagsFormGroup(i).controls['name'].touched && getTagsFormGroup(i).controls['name'].hasError('required')">
+                        Tag is required! </span>
+                    </div>
+
+                    <div class="form-group col-12 text-right">
+                      <button class="btn btn-danger" type="button" (click)="removeTag(i)"> Remove </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="form-group col-6">
+                    <select class="form-select select"  [formControl]="sortByDate">
+                        <option selected disabled>Sort By Date</option>
+                        <option value="asc">Ascending</option>
+                        <option value="desc">Descending</option>
+                     </select>
+                     <select class="form-select select"  [formControl]="sortByName">
+                        <option selected disabled>Sort By Name</option>
+                        <option value="asc">Ascending</option>
+                        <option value="desc">Descending</option>
+                     </select>
+                </div>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="col-12">
+                <button class="btn btn-primary m-1" type="button" (click)="addTag()"> Add Tag </button>
+                <button class="btn btn-success m-1" [disabled]="!form.valid" type="submit"> Search </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+
+<div class="container">
+
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+                    <div class="career-search mb-60">
+                    <div class="container-fluid padding">
+                        <div class="row padding" >
+                            <div class="col-md-3" *ngFor="let c of certificates">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h4 class="card-title">{{c.name}}</h4>
+                                        <p class="card-text">{{c.description}}</p>
+                                        <a href="/certificate/{{c.id}}">Info</a>
+                                        <a href="/edit_certificate/{{c.id}}">Edit</a>
+                                        <a type="button" (click)="deleteCertificate(c.id)"> Delete </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            <mat-paginator length="100" [pageSize]="8" (page)="OnPageChange($event)">
+                
+            </mat-paginator>
+        </div>
