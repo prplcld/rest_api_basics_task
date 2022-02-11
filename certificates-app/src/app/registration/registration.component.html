@@ -1,0 +1,42 @@
+<app-navbar></app-navbar>
+<!------ Include the above in your HEAD tag ---------->
+
+<div class="container register-form">
+            <div class="form">
+            <form [formGroup]="form" (submit)="submit()">
+
+                <div class="form-content">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <input type="text" class="form-control" formControlName="username" placeholder="Username" value=""/>
+                                <span class="text-danger" *ngIf="form.controls['username'].touched && form.controls['username'].hasError('required')">
+                                    Username is required! </span>
+                            </div>
+                            <div class="form-group">
+                                <input type="email" class="form-control" formControlName="email" placeholder="Email" value=""/>
+                                <span class="text-danger" *ngIf="form.controls['email'].touched && form.controls['email'].hasError('required')">
+                                    Email is required! </span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <input type="password" class="form-control" formControlName="password" placeholder="Your Password *" value=""/>
+                                <span class="text-danger" *ngIf="form.controls['password'].touched && form.controls['password'].hasError('required')">
+                                    Password is required! </span>
+                            </div>
+                            <div class="form-group">
+                                <input type="password" class="form-control" formControlName="confirmPassword" placeholder="Confirm Password *" value=""/>
+                                <span class="text-danger" *ngIf="form.controls['confirmPassword'].touched && form.controls['confirmPassword'].hasError('required')">
+                                    Confirm Password is required! </span>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn btn-success m-1" [disabled]="!form.valid || !validatePasswords()"  type="submit"> Register </button>
+                    <span class="text-danger" *ngIf="!validatePasswords()">
+                       Password and confirm password are not the same!
+                    </span>
+                </div>
+            </form>
+            </div>
+        </div>

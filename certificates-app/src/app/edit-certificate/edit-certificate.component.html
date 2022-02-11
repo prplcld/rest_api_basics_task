@@ -1,0 +1,69 @@
+<app-navbar></app-navbar>
+<div class="container p-3">
+    <div class="row">
+      <div class="col-12">
+        <form [formGroup]="form" (submit)="submit()">
+          <div class="card">
+            <div class="card-header">Create Certificate</div>
+            <div class="card-body">
+              <div class="row">
+                <div class="form-group col-6">
+                  <label>Name</label>
+                  <input class="form-control" formControlName="name" type="text">
+                  <span class="text-danger" *ngIf="form.controls['name'].touched && form.controls['name'].hasError('required')">
+                    Name is required! </span>
+                </div>
+                <div class="form-group col-6">
+                  <label>Description</label>
+                  <input class="form-control" formControlName="description" type="text">
+                  <span class="text-danger" *ngIf="form.controls['description'].touched && form.controls['description'].hasError('required')">
+                    Description is required! </span>
+                </div>
+              </div>
+              <div class="row">
+                <div class="form-group col-6">
+                    <label>Price</label>
+                    <input class="form-control" formControlName="price" type="text" >
+                    <span class="text-danger" *ngIf="form.controls['price'].touched && form.controls['price'].hasError('required')">
+                      Price is required! </span>
+                  </div>
+                  <div class="form-group col-6">
+                    <label>Duration days</label>
+                    <input class="form-control" formControlName="duration" type="text">
+                    <span class="text-danger" *ngIf="form.controls['duration'].touched && form.controls['duration'].hasError('required')">
+                      Duration is required! </span>
+                  </div>
+              </div>
+            </div>
+            
+            <div class="card-header">Tags</div>
+            <div class="card-body" formArrayName="tags">
+              <div class="row">
+                <div class="col-6" *ngFor="let tag of tagsFormGroup.controls; let i = index;">
+                  <div [formGroupName]="i" class="row">
+                    
+                    <div class="form-group col-6">
+                      <label>Tag</label>
+                      <input class="form-control" formControlName="name" type="text">
+                      <span class="text-danger" *ngIf="getTagsFormGroup(i).controls['name'].touched && getTagsFormGroup(i).controls['name'].hasError('required')">
+                        Tag is required! </span>
+                    </div>
+
+                    <div class="form-group col-12 text-right">
+                      <button class="btn btn-danger" type="button" (click)="removeTag(i)"> Remove </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="col-12">
+                <button class="btn btn-primary m-1" type="button" (click)="addTag()"> Add Tag </button>
+                <button class="btn btn-success m-1" [disabled]="!form.valid" type="submit"> Save Certificate </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>

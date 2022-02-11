@@ -1,0 +1,39 @@
+<nav class="navbar navbar-expand-md navbar-light bg-light sticky-top">
+    <div class="container-fluid">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="">Certificates</a>
+                </li>
+                <li class="nav-item" *ngIf="isLoggedIn">
+                    <a class="nav-link" href="tags">Tags</a>
+                </li>
+                <li class="nav-item" *ngIf="isLoggedIn">
+                    <a class="nav-link" href="create_certificate">Add Certificate</a>
+                </li>
+                <li class="nav-item" *ngIf="isLoggedIn">
+                    <a class="nav-link" href="">Add Tag</a>
+                </li>
+                <li class="nav-item" *ngIf="!isLoggedIn">
+                    <a class="nav-link" href="login">Login</a>
+                </li>
+                <li class="nav-item" *ngIf="isLoggedIn">
+                    <a class="nav-link" href="logout">Logout</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="register">Register</a>
+                </li>
+                <li class="nav-item" *ngIf="isLoggedIn">
+                    <a class="nav-link" href="order">Make Order</a>
+                </li>
+                <li class="nav-item" *ngIf="isLoggedIn">
+                    <a class="nav-link" href="orders">Orders</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>

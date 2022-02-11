@@ -1,0 +1,18 @@
+<app-navbar></app-navbar>
+<div class="container">
+    <div class="row">
+        <div class="col-md-7" *ngIf="certificate">
+            <h2>Certificate name: {{certificate.name}}</h2>
+            <p>Certificate description: {{certificate.description}}</p>
+            <p>Create date: {{certificate.createDate}}</p>
+            <p>Last update date :{{certificate.lastUpdateDate}}</p>
+            Tags:
+            <div *ngFor="let t of certificate.tags">
+                <p>
+                    {{t.name}}
+                <p>
+                </div>
+                
+        </div>
+    </div>
+</div>

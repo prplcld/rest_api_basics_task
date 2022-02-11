@@ -1,0 +1,21 @@
+<app-navbar></app-navbar>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css" integrity="sha256-3sPp8BkKUE7QyPSl6VfBByBroQbKxKG7tsusY2mhbVY=" crossorigin="anonymous" />
+
+<div class="row">
+    <div class="col-lg-10 mx-auto">
+        <div class="career-search mb-60">
+        <div class="container-fluid padding">
+            <div class="row padding" >
+                <div class="col-md-3" *ngFor="let t of tags">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">Id : {{t.id}}</h4>
+                            <p class="card-text">Name : {{t.name}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+<mat-paginator length="100" [pageSize]="8" (page)="OnPageChange($event)">
+    
+</mat-paginator>

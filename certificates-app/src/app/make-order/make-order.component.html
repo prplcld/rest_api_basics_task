@@ -1,0 +1,48 @@
+<app-navbar></app-navbar>
+
+<div class="container p-3">
+    <div class="row">
+      <div class="col-12">
+        <form [formGroup]="form" (submit)="submit()">
+          <div class="card">
+            <div class="card-header">Create Certificate</div>
+            <div class="card-body">
+              <div class="row">
+                <div class="form-group col-6">
+                  <label>User Id</label>
+                  <input class="form-control" formControlName="userId" type="text">
+                  <span class="text-danger" *ngIf="form.controls['userId'].touched && form.controls['userId'].hasError('required')">
+                    UserId is required! </span>
+                </div>
+              </div>
+              <div class="card-header">Certificates</div>
+              <div class="row" *ngFor="let c of chosenCertificates">
+                {{c.name}}
+              </div>
+            </div>
+            <p>Cost : {{cost}}</p>
+
+            <div class="card-body">
+              <div class="col-12">
+                <button class="btn btn-success m-1" [disabled]="!form.valid" type="submit"> Save Order </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+<div class="container-fluid padding">
+	<div class="row padding" >
+		<div class="col-md-3" *ngFor="let c of certificates">
+			<div class="card">
+				<div class="card-body">
+					<h4 class="card-title">{{c.name}}</h4>
+					<p class="card-text">{{c.description}}</p>
+					<button class="btn btn-primary m-1" type="button" (click)="addCertificateToOrder(c)"> Add Certificate to Order </button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
